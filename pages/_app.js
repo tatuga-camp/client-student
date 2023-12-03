@@ -17,6 +17,10 @@ export default function App({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-C308M4051V"
+      />
+      <Script
         id="google-analytics"
         strategy="afterInteractive"
       >{` window.dataLayer = window.dataLayer || [];
