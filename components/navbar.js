@@ -91,7 +91,10 @@ function Navbar() {
           } `}
         >
           <ul className="list-none font-medium grid grid-cols-1 place-items-center gap-2 ">
-            <Link className="no-underline" href="/">
+            <Link
+              className="no-underline"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}`}
+            >
               <li
                 onClick={onClick}
                 className="w-60 bg-white text-center text-black rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
@@ -99,7 +102,10 @@ function Navbar() {
                 Home page
               </li>
             </Link>
-            <Link className="no-underline" href="/classroom">
+            <Link
+              className="no-underline"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}/classroom`}
+            >
               <li
                 onClick={onClick}
                 className="w-60 bg-white text-center rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
@@ -107,7 +113,10 @@ function Navbar() {
                 tatuga class
               </li>
             </Link>
-            <Link className="no-underline relative" href="/school">
+            <Link
+              className="no-underline relative"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}/school`}
+            >
               <div
                 className="px-1 w-max text-xs animate-bounce absolute top-0 left-0 m-auto 
              bg-main-color text-white font-Poppins rounded-lg"
@@ -121,7 +130,10 @@ function Navbar() {
                 tatuga school
               </li>
             </Link>
-            <Link className="no-underline" href="/about-us">
+            <Link
+              className="no-underline"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}/about-us`}
+            >
               <li
                 onClick={onClick}
                 className="w-60 bg-white text-center rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
@@ -130,7 +142,10 @@ function Navbar() {
               </li>
             </Link>
 
-            <Link className="no-underline" href="/classroom/subscriptions">
+            <Link
+              className="no-underline"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}/classroom/subscriptions`}
+            >
               <button
                 className="focus:outline-none text-base font-Inter text-black font-semibold 
                border-0 w-60 h-auto bg-white hover:text-white hover:bg-[#2C7CD1]  flex justify-center items-center gap-2
@@ -176,7 +191,10 @@ function Navbar() {
           bg-white border-b-2 border-black b gap-x-2  py-5 font-normal items-center text-black transition-all duration-500 `}
         >
           <li className="mr-auto ml-5">
-            <Link className="no-underline" href="/">
+            <Link
+              className="no-underline"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}`}
+            >
               <Button className="flex items-center pt-4 pr-4 ">
                 <div className="w-max flex gap-2 justify-center items-center">
                   <div className="w-10 h-10">
@@ -192,28 +210,40 @@ function Navbar() {
           </li>
 
           <li className="">
-            <Link className="no-underline" href="/about-us">
+            <Link
+              className="no-underline"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}/about-us`}
+            >
               <button className="focus:outline-none text-base text-black font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>about us</span>
               </button>
             </Link>
           </li>
           <li className="relative">
-            <Link className="no-underline" href="/school">
+            <Link
+              className="no-underline"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}/school`}
+            >
               <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga school 🏫</span>
               </button>
             </Link>
           </li>
           <li className="">
-            <Link className="no-underline" href="/classroom">
+            <Link
+              className="no-underline"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}/classroom`}
+            >
               <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga class 👩‍🏫</span>
               </button>
             </Link>
           </li>
           <li className="">
-            <Link className="no-underline" href="/classroom/subscriptions">
+            <Link
+              className="no-underline"
+              href={`${process.env.NEXT_PUBLIC_CLIENT_MAIN_URL}/classroom/subscriptions`}
+            >
               <button
                 className="focus:outline-none text-base font-Inter text-black font-semibold 
                border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1]  flex justify-center items-center gap-2
