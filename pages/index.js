@@ -5,7 +5,7 @@ function index() {
 }
 
 export default index;
-export async function getStaticProps(ctx) {
+export async function getServerSideProps(ctx) {
   return {
     redirect: {
       permanent: false,
