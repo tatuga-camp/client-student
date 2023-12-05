@@ -1,50 +1,50 @@
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Editor } from '@tinymce/tinymce-react';
-import { IoCaretBackOutline, IoDocumentText } from 'react-icons/io5';
-import { Box, Skeleton, TextField } from '@mui/material';
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Editor } from "@tinymce/tinymce-react";
+import { IoCaretBackOutline, IoDocumentText } from "react-icons/io5";
+import { Box, Skeleton, TextField } from "@mui/material";
 import {
   DeleteMyWorkService,
   GetAssignment,
   GetMyWork,
   SummitWork,
-} from '../../../../../../service/student/assignment';
-import { SlideshowLightbox, initLightboxJS } from 'lightbox.js-react';
-import Image from 'next/image';
-import 'lightbox.js-react/dist/index.css';
-import { CiFaceFrown } from 'react-icons/ci';
-import Swal from 'sweetalert2';
-import SendIcon from '@mui/icons-material/Send';
+} from "../../../../../../service/student/assignment";
+import { SlideshowLightbox, initLightboxJS } from "lightbox.js-react";
+import Image from "next/image";
+import "lightbox.js-react/dist/index.css";
+import { CiFaceFrown } from "react-icons/ci";
+import Swal from "sweetalert2";
+import SendIcon from "@mui/icons-material/Send";
 import {
   GetComments,
   PostComment,
-} from '../../../../../../service/student/comment';
-import Head from 'next/head';
-import { GetStudent } from '../../../../../../service/student/student';
-import Loading from '../../../../../../components/loading/loading';
+} from "../../../../../../service/student/comment";
+import Head from "next/head";
+import { GetStudent } from "../../../../../../service/student/student";
+import Loading from "../../../../../../components/loading/loading";
 import {
   BsFileEarmark,
   BsFileEarmarkCode,
   BsFillChatDotsFill,
   BsImageFill,
-} from 'react-icons/bs';
-import { FcVideoFile } from 'react-icons/fc';
-import { FaFileAudio, FaRegFilePdf } from 'react-icons/fa';
-import { RiArrowGoBackFill } from 'react-icons/ri';
-import { MdOutlineInventory2 } from 'react-icons/md';
+} from "react-icons/bs";
+import { FcVideoFile } from "react-icons/fc";
+import { FaFileAudio, FaRegFilePdf } from "react-icons/fa";
+import { RiArrowGoBackFill } from "react-icons/ri";
+import { MdOutlineInventory2 } from "react-icons/md";
 import {
   AiFillDelete,
   AiOutlineCloudUpload,
   AiOutlinePlus,
-} from 'react-icons/ai';
-import { useSpring, animated } from '@react-spring/web';
-import { FiRefreshCw } from 'react-icons/fi';
-import ReactPlayer from 'react-player';
-import { HiOutlineNewspaper } from 'react-icons/hi2';
-import CreateStudentWork from '../../../../../../components/form/createStudentWork';
-import { StudentGetClassroom } from '../../../../../../service/student/classroom';
-import ShowSelectFile from '../../../../../../components/assignment/showSelectFile';
+} from "react-icons/ai";
+import { useSpring, animated } from "@react-spring/web";
+import { FiRefreshCw } from "react-icons/fi";
+import ReactPlayer from "react-player";
+import { HiOutlineNewspaper } from "react-icons/hi2";
+import CreateStudentWork from "../../../../../../components/form/createStudentWork";
+import { StudentGetClassroom } from "../../../../../../service/student/classroom";
+import ShowSelectFile from "../../../../../../components/assignment/showSelectFile";
 
 function Index() {
   const router = useRouter();
@@ -65,7 +65,7 @@ function Index() {
   const currentTime = new Date();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [studentSummit, setStudentSummit] = useState({
-    body: '',
+    body: "",
   });
   const [triggerShowFiles, setTiggerShowFiles] = useState(true);
   const [triggerShowWorksheet, setTriggerShowWorksheet] = useState(false);
@@ -74,22 +74,22 @@ function Index() {
   const [triggerShowFile, setTriggerShowFile] = useState(false);
   const [selectFile, setSelectFile] = useState();
   const classroom = useQuery(
-    ['classroom'],
+    ["classroom"],
     () => StudentGetClassroom({ classroomId: router?.query?.classroomId }),
     {
       enabled: router.isReady,
-    },
+    }
   );
   const assignment = useQuery(
-    ['assignment'],
+    ["assignment"],
     () => GetAssignment({ assignmentId: router.query.assignmentId }),
     {
       enabled: false,
-    },
+    }
   );
 
   const comments = useQuery(
-    ['comments'],
+    ["comments"],
     () =>
       GetComments({
         assignmentId: assignment.data.id,
@@ -97,7 +97,7 @@ function Index() {
       }),
     {
       enabled: assignment.isSuccess,
-    },
+    }
   );
 
   useEffect(() => {
@@ -113,25 +113,25 @@ function Index() {
     setDeadline(() => {
       const date = new Date(assignment?.data?.deadline);
 
-      const formattedDate = date.toLocaleDateString('th-TH', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
+      const formattedDate = date.toLocaleDateString("th-TH", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
       });
       return formattedDate;
     });
   }, [assignment.data]);
 
   const student = useQuery(
-    ['student'],
+    ["student"],
     () => GetStudent({ studentId: router.query.studentId }),
     {
       enabled: false,
-    },
+    }
   );
 
   const fetchStudentWork = useQuery(
-    ['student-work'],
+    ["student-work"],
     () =>
       GetMyWork({
         studentId: router.query.studentId,
@@ -139,11 +139,11 @@ function Index() {
       }),
     {
       enabled: false,
-    },
+    }
   );
 
   const handleSelectFile = ({ file }) => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     setSelectFile(() => file);
     setTriggerShowFile(() => true);
   };
@@ -152,21 +152,21 @@ function Index() {
     setStudnetWork(() => {
       let pictures = [];
       let files = [];
-      if (fetchStudentWork?.data?.data.status === 'have-work') {
+      if (fetchStudentWork?.data?.data.status === "have-work") {
         if (fetchStudentWork?.data?.data.picture) {
           const arrayPictures =
-            fetchStudentWork?.data?.data.picture.split(', ');
+            fetchStudentWork?.data?.data.picture.split(", ");
           for (const arrayPicture of arrayPictures) {
             const fileType = get_url_extension(arrayPicture);
             if (
-              fileType === 'jpg' ||
-              fileType === 'jpeg' ||
-              fileType === 'png' ||
-              fileType === 'HEIC' ||
-              fileType === 'JPEG' ||
-              fileType === 'PNG' ||
-              fileType === 'JPG' ||
-              fileType === 'heic'
+              fileType === "jpg" ||
+              fileType === "jpeg" ||
+              fileType === "png" ||
+              fileType === "HEIC" ||
+              fileType === "JPEG" ||
+              fileType === "PNG" ||
+              fileType === "JPG" ||
+              fileType === "heic"
             ) {
               pictures.push({ src: arrayPicture, alt: "student's work" });
             } else {
@@ -181,7 +181,7 @@ function Index() {
         } else if (!fetchStudentWork?.data?.data.picture) {
           return fetchStudentWork?.data?.data;
         }
-      } else if (fetchStudentWork?.data?.data.status === 'no-work') {
+      } else if (fetchStudentWork?.data?.data.status === "no-work") {
         return fetchStudentWork?.data?.data;
       }
     });
@@ -191,22 +191,22 @@ function Index() {
     e.preventDefault();
     if (selectedFiles.length === 0) {
       Swal.fire({
-        title: 'ยืนยันการส่งงาน',
-        text: 'คุณยังไม่ได้แนบไฟล์งาน แน่ใจใช่ไหมว่าจะส่ง?',
-        icon: 'warning',
+        title: "ยืนยันการส่งงาน",
+        text: "คุณยังไม่ได้แนบไฟล์งาน แน่ใจใช่ไหมว่าจะส่ง?",
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes',
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
             const formFiles = new FormData();
             selectedFiles.forEach((file) => {
-              formFiles.append('files', file);
+              formFiles.append("files", file);
             });
-            formFiles.append('body', studentSummit.body);
-            formFiles.getAll('body');
+            formFiles.append("body", studentSummit.body);
+            formFiles.getAll("body");
             await SummitWork({
               formFiles,
               studentId: router.query.studentId,
@@ -214,22 +214,22 @@ function Index() {
             });
 
             await fetchStudentWork.refetch();
-            Swal.fire('success', 'ส่งงานแล้ว', 'success');
+            Swal.fire("success", "ส่งงานแล้ว", "success");
           } catch (err) {
             if (
               err?.props?.response?.data?.message ===
               "student's already summit their work"
             ) {
               Swal.fire(
-                'error',
-                'นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม',
-                'error',
+                "error",
+                "นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม",
+                "error"
               );
             } else {
               Swal.fire(
-                'error',
+                "error",
                 err?.props?.response?.data?.message.toString(),
-                'error',
+                "error"
               );
             }
             console.log(err);
@@ -238,23 +238,23 @@ function Index() {
       });
     } else if (selectedFiles.length > 0) {
       Swal.fire({
-        title: 'ยืนยันการส่งงาน',
-        text: 'นักเรียนแน่ใจหรือไม่ว่าจะส่งงาน? เนื่องจากส่งงานแล้วจะไม่สามารถลบงานได้ต้องติดต่อครูผู้สอน',
-        icon: 'question',
+        title: "ยืนยันการส่งงาน",
+        text: "นักเรียนแน่ใจหรือไม่ว่าจะส่งงาน? เนื่องจากส่งงานแล้วจะไม่สามารถลบงานได้ต้องติดต่อครูผู้สอน",
+        icon: "question",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes',
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
             setLoading(() => true);
             const formFiles = new FormData();
             selectedFiles.forEach((file) => {
-              formFiles.append('files', file);
+              formFiles.append("files", file);
             });
-            formFiles.append('body', studentSummit.body);
-            formFiles.getAll('body');
+            formFiles.append("body", studentSummit.body);
+            formFiles.getAll("body");
             await SummitWork({
               formFiles,
               studentId: router.query.studentId,
@@ -262,7 +262,7 @@ function Index() {
             });
             setLoading(() => false);
             fetchStudentWork.refetch();
-            Swal.fire('success', 'ส่งงานแล้ว', 'success');
+            Swal.fire("success", "ส่งงานแล้ว", "success");
           } catch (err) {
             setLoading(() => false);
             if (
@@ -270,12 +270,12 @@ function Index() {
               "student's already summit their work"
             ) {
               Swal.fire(
-                'error',
-                'นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม',
-                'error',
+                "error",
+                "นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม",
+                "error"
               );
             } else {
-              Swal.fire('error', err?.props?.response?.data?.message, 'error');
+              Swal.fire("error", err?.props?.response?.data?.message, "error");
             }
             console.log(err);
           }
@@ -312,10 +312,10 @@ function Index() {
 
   useEffect(() => {
     setTeacher(() => {
-      const teacher = localStorage.getItem('teacher');
+      const teacher = localStorage.getItem("teacher");
       return JSON.parse(teacher);
     });
-    initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, 'individual');
+    initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, "individual");
   }, []);
 
   const handleSumitComment = async (e) => {
@@ -329,18 +329,18 @@ function Index() {
       setStudentSummit((prev) => {
         return {
           ...prev,
-          body: '',
+          body: "",
         };
       });
       comments.refetch();
     } catch (err) {
-      Swal.fire('error', err?.props?.response?.data?.message, 'error');
+      Swal.fire("error", err?.props?.response?.data?.message, "error");
     }
   };
 
   // check file type
   function get_url_extension(url) {
-    return url.split(/[#?]/)[0].split('.').pop().trim();
+    return url.split(/[#?]/)[0].split(".").pop().trim();
   }
 
   const handleOpenTrigerMenu = () => {
@@ -356,7 +356,7 @@ function Index() {
   };
 
   const handleCloseTrigerMenu = () => {
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
     setTriggerMenu(() => false);
     setActiveMenu(() => 4);
     api.start({
@@ -371,20 +371,20 @@ function Index() {
 
   const handleDeleteStudentWork = async ({ studentWorkId }) => {
     const name = student?.data?.data?.firstName;
-    const replacedText = name.replace(/ /g, '_');
-    let content = document.createElement('div');
+    const replacedText = name.replace(/ /g, "_");
+    let content = document.createElement("div");
     content.innerHTML =
-      '<div>กรุณาพิมพ์ข้อความนี้</div> <strong>' +
+      "<div>กรุณาพิมพ์ข้อความนี้</div> <strong>" +
       replacedText +
-      '</strong> <div>เพื่อลบงาน</div>';
+      "</strong> <div>เพื่อลบงาน</div>";
     const { value } = await Swal.fire({
-      title: 'ยืนยันการลบชิ้นงาน',
-      input: 'text',
+      title: "ยืนยันการลบชิ้นงาน",
+      input: "text",
       html: content,
       showCancelButton: true,
       inputValidator: (value) => {
         if (value !== replacedText) {
-          return 'กรุณาพิมพ์ข้อความยืนยันให้ถูกต้อง';
+          return "กรุณาพิมพ์ข้อความยืนยันให้ถูกต้อง";
         }
       },
     });
@@ -396,16 +396,16 @@ function Index() {
           classroomId: router.query.classroomId,
           studentWorkId: studentWork.id,
         });
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
         setIsLoading(() => false);
         location.reload();
       } catch (err) {
         setIsLoading(() => false);
         console.log(err);
         Swal.fire(
-          'error!',
+          "error!",
           err?.props?.response?.data?.message?.toString(),
-          'error',
+          "error"
         );
       }
     }
@@ -551,7 +551,7 @@ function Index() {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center">
-                    {studentWork?.status === 'no-work' && isDue && (
+                    {studentWork?.status === "no-work" && isDue && (
                       <div
                         className="w-max px-2 py-1 bg-red-500  rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
@@ -563,7 +563,7 @@ function Index() {
                         </span>
                       </div>
                     )}
-                    {studentWork?.status === 'no-work' && !isDue && (
+                    {studentWork?.status === "no-work" && !isDue && (
                       <div
                         className="w-max px-2 py-1 bg-orange-500  rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
@@ -575,7 +575,7 @@ function Index() {
                         </span>
                       </div>
                     )}
-                    {studentWork?.status === 'have-work' &&
+                    {studentWork?.status === "have-work" &&
                       studentWork.isSummited === false && (
                         <div
                           className="w-max px-2 bg-yellow-500 py-1 rounded-lg border-2 border-solid border-white
@@ -588,7 +588,7 @@ function Index() {
                           </span>
                         </div>
                       )}
-                    {studentWork?.status === 'have-work' &&
+                    {studentWork?.status === "have-work" &&
                       studentWork.isSummited === true && (
                         <div
                           className="w-max px-2 bg-green-500 py-1 rounded-lg border-2 border-solid border-white
@@ -614,9 +614,9 @@ function Index() {
             <ul className="w-full h-max max-h-[20rem] grid p-5 gap-5 overflow-auto ">
               {assignment?.data?.files.map((file, index) => {
                 if (
-                  file.type === 'image/jpeg' ||
-                  file.type === '' ||
-                  file.type === 'image/png'
+                  file.type === "image/jpeg" ||
+                  file.type === "" ||
+                  file.type === "image/png"
                 ) {
                   return (
                     <div
@@ -635,8 +635,8 @@ function Index() {
                     </div>
                   );
                 } else if (
-                  file.type === 'video/mp4' ||
-                  file.type === 'video/quicktime'
+                  file.type === "video/mp4" ||
+                  file.type === "video/quicktime"
                 ) {
                   return (
                     <div
@@ -656,8 +656,8 @@ function Index() {
                     </div>
                   );
                 } else if (
-                  file.type === 'audio/mpeg' ||
-                  file.type === 'audio/mp3'
+                  file.type === "audio/mpeg" ||
+                  file.type === "audio/mp3"
                 ) {
                   return (
                     <div
@@ -676,7 +676,7 @@ function Index() {
                       </span>
                     </div>
                   );
-                } else if (file.type === 'application/pdf') {
+                } else if (file.type === "application/pdf") {
                   return (
                     <div
                       onClick={() => handleSelectFile({ file: file })}
@@ -696,7 +696,7 @@ function Index() {
                   );
                 } else if (
                   file.type ===
-                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 ) {
                   return (
                     <div
@@ -740,8 +740,8 @@ function Index() {
           <div
             className={` ${
               loadingTiny
-                ? 'w-0 h-0 opacity-0'
-                : 'h-96 max-h-96  w-full opacity-100 '
+                ? "w-0 h-0 opacity-0"
+                : "h-96 max-h-96  w-full opacity-100 "
             }  lg:text-lg rounded-md max-w-4xl overflow-auto`}
           >
             <Editor
@@ -749,15 +749,15 @@ function Index() {
               apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
               init={{
                 setup: function (editor) {
-                  editor.on('init', function () {
+                  editor.on("init", function () {
                     setLoadingTiny(() => false);
                   });
                 },
-                height: '100%',
-                width: '100%',
+                height: "100%",
+                width: "100%",
                 menubar: false,
                 toolbar: false,
-                selector: 'textarea', // change this value according to your HTML
+                selector: "textarea", // change this value according to your HTML
               }}
               initialValue={assignment?.data?.description}
               value={assignment?.data?.description}
@@ -771,7 +771,7 @@ function Index() {
       <animated.div
         style={{ ...springs }}
         className={`w-full z-20  ${
-          triggerMenu ? 'h-screen' : 'h-min'
+          triggerMenu ? "h-screen" : "h-min"
         }    fixed bottom-0 flex   items-end`}
       >
         <div className="bg-white w-full h-[30rem] flex-col flex justify-start items-center relative">
@@ -838,7 +838,7 @@ function Index() {
               >
                 <span className="text-sm text-red-500 w-8/12 text-center">
                   สามารส่งไฟล์ mp4, mp3, docx, pdf,jpge, png ได้แล้ว ขนาดไม่เกิน
-                  100 MB
+                  400 MB
                 </span>
                 <div className="flex justify-center gap-5 w-full">
                   {fetchStudentWork.isLoading ? (
@@ -923,9 +923,9 @@ application/pdf,
                     <div className="grid grid-cols-2 place-items-center gap-5 relative h-32  overflow-y-auto ring-2 p-3 rounded-xl">
                       {selectedFiles.map((file, index) => {
                         if (
-                          file.type === 'image/jpeg' ||
-                          file.type === '' ||
-                          file.type === 'image/png'
+                          file.type === "image/jpeg" ||
+                          file.type === "" ||
+                          file.type === "image/png"
                         )
                           return (
                             <div
@@ -939,8 +939,8 @@ application/pdf,
                             </div>
                           );
                         if (
-                          file.type === 'video/mp4' ||
-                          file.type === 'video/quicktime'
+                          file.type === "video/mp4" ||
+                          file.type === "video/quicktime"
                         )
                           return (
                             <div className="w-full  px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
@@ -951,8 +951,8 @@ application/pdf,
                             </div>
                           );
                         if (
-                          file.type === 'audio/mpeg' ||
-                          file.type === 'audio/mp3'
+                          file.type === "audio/mpeg" ||
+                          file.type === "audio/mp3"
                         )
                           return (
                             <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
@@ -962,7 +962,7 @@ application/pdf,
                               <span className="w-20 truncate">{file.name}</span>
                             </div>
                           );
-                        if (file.type === 'application/pdf')
+                        if (file.type === "application/pdf")
                           return (
                             <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
                               <div className="flex items-center justify-center text-gray-700">
@@ -973,7 +973,7 @@ application/pdf,
                           );
                         if (
                           file.type ===
-                          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         )
                           return (
                             <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
@@ -994,7 +994,7 @@ application/pdf,
                   >
                     โปรดรอสักครู่
                   </div>
-                ) : fileSize > 100 ? (
+                ) : fileSize > 400 ? (
                   <div
                     className="w-40 h-10 mt-5  bg-red-500 drop-shadow-md text-white rounded-xl
            flex items-center justify-center"
@@ -1024,7 +1024,7 @@ application/pdf,
 
           {activeMenu === 1 && (
             <div className="w-11/12 max-w-3xl  flex flex-col gap-2 items-center justify-top">
-              {studentWork?.status === 'no-work' ? (
+              {studentWork?.status === "no-work" ? (
                 <div
                   className="font-Kanit text-2xl text-red-400 font-light h-20 flex items-center 
                 justify-center gap-2"
@@ -1044,8 +1044,8 @@ application/pdf,
                       }}
                       className={` select-none ${
                         triggerShowFiles
-                          ? 'font-medium underline underline-offset-2'
-                          : 'font-normal'
+                          ? "font-medium underline underline-offset-2"
+                          : "font-normal"
                       }`}
                     >
                       ไฟล์งาน
@@ -1054,8 +1054,8 @@ application/pdf,
                     <li
                       className={`select-none ${
                         triggerShowWorksheet
-                          ? 'font-medium underline underline-offset-2'
-                          : 'font-normal'
+                          ? "font-medium underline underline-offset-2"
+                          : "font-normal"
                       }`}
                       onClick={() => {
                         setTiggerShowFiles(() => false);
@@ -1065,7 +1065,7 @@ application/pdf,
                       ใบงาน
                     </li>
                   </ul>
-                  {studentWork?.status !== 'no-work' && (
+                  {studentWork?.status !== "no-work" && (
                     <div className="w-full flex justify-end">
                       <button
                         onClick={handleDeleteStudentWork}
@@ -1089,8 +1089,8 @@ application/pdf,
                           className={`container grid w-full  h-max items-center place-items-center
                        ${
                          studentWork?.picture.length === 1
-                           ? 'grid-cols-1'
-                           : 'grid-cols-2 md:grid-cols-3 '
+                           ? "grid-cols-1"
+                           : "grid-cols-2 md:grid-cols-3 "
                        }  gap-2  `}
                         >
                           {studentWork?.picture?.map((image, index) => {
@@ -1114,7 +1114,7 @@ application/pdf,
                       <div className="flex flex-col gap-5 justify-start items-center">
                         {studentWork?.files?.length > 0 &&
                           studentWork?.files.map((file, index) => {
-                            if (file.fileType === 'pdf') {
+                            if (file.fileType === "pdf") {
                               return (
                                 <div
                                   key={index}
@@ -1131,7 +1131,7 @@ application/pdf,
                                 </div>
                               );
                             }
-                            if (file.fileType === 'docx') {
+                            if (file.fileType === "docx") {
                               return (
                                 <div
                                   key={index}
@@ -1146,9 +1146,9 @@ application/pdf,
                               );
                             }
                             if (
-                              file.fileType === 'mp4' ||
-                              file.fileType === 'mov' ||
-                              file.fileType === 'MOV'
+                              file.fileType === "mp4" ||
+                              file.fileType === "mov" ||
+                              file.fileType === "MOV"
                             ) {
                               return (
                                 <div
@@ -1166,8 +1166,8 @@ application/pdf,
                               );
                             }
                             if (
-                              file.fileType === 'mp3' ||
-                              file.fileType === 'aac'
+                              file.fileType === "mp3" ||
+                              file.fileType === "aac"
                             ) {
                               return (
                                 <div
@@ -1194,15 +1194,15 @@ application/pdf,
                         apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
                         init={{
                           setup: function (editor) {
-                            editor.on('init', function () {
+                            editor.on("init", function () {
                               setLoadingTiny(() => false);
                             });
                           },
-                          height: '100%',
-                          width: '100%',
+                          height: "100%",
+                          width: "100%",
                           menubar: false,
                           toolbar: false,
-                          selector: 'textarea', // change this value according to your HTML
+                          selector: "textarea", // change this value according to your HTML
                         }}
                         initialValue={fetchStudentWork?.data?.data?.body}
                         value={fetchStudentWork?.data?.data?.body}
@@ -1252,9 +1252,9 @@ application/pdf,
                             <div
                               className="pl-4 "
                               style={{
-                                wordWrap: 'break-word',
-                                maxHeight: '200px',
-                                overflowY: 'auto',
+                                wordWrap: "break-word",
+                                maxHeight: "200px",
+                                overflowY: "auto",
                               }}
                               dangerouslySetInnerHTML={{
                                 __html: comment.body,
@@ -1299,8 +1299,8 @@ application/pdf,
                             <div
                               className="pl-4 "
                               style={{
-                                wordWrap: 'break-word',
-                                overflowY: 'auto',
+                                wordWrap: "break-word",
+                                overflowY: "auto",
                               }}
                               dangerouslySetInnerHTML={{
                                 __html: comment.body,
@@ -1322,31 +1322,31 @@ application/pdf,
                     textareaName="body"
                     init={{
                       link_context_toolbar: true,
-                      height: '100%',
-                      width: '100%',
+                      height: "100%",
+                      width: "100%",
                       menubar: false,
                       paste_data_images: false,
                       plugins: [
-                        'advlist',
-                        'autolink',
-                        'lists',
-                        'link',
-                        'charmap',
-                        'preview',
-                        'anchor',
-                        'searchreplace',
-                        'visualblocks',
-                        'code',
-                        'fullscreen',
-                        'insertdatetime',
-                        'media',
-                        'table',
-                        'help',
-                        'wordcount',
+                        "advlist",
+                        "autolink",
+                        "lists",
+                        "link",
+                        "charmap",
+                        "preview",
+                        "anchor",
+                        "searchreplace",
+                        "visualblocks",
+                        "code",
+                        "fullscreen",
+                        "insertdatetime",
+                        "media",
+                        "table",
+                        "help",
+                        "wordcount",
                       ],
-                      toolbar: '',
+                      toolbar: "",
                       content_style:
-                        'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                        "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
                     }}
                     initialValue=""
                     value={studentSummit.body}
