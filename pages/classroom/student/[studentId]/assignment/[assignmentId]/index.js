@@ -232,7 +232,7 @@ function Index() {
                 "error"
               );
             }
-            console.log(err);
+            console.error(err);
           }
         }
       });
@@ -277,7 +277,7 @@ function Index() {
             } else {
               Swal.fire("error", err?.props?.response?.data?.message, "error");
             }
-            console.log(err);
+            console.error(err);
           }
         }
       });
@@ -401,7 +401,7 @@ function Index() {
         location.reload();
       } catch (err) {
         setIsLoading(() => false);
-        console.log(err);
+        console.error(err);
         Swal.fire(
           "error!",
           err?.props?.response?.data?.message?.toString(),

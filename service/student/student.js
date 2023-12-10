@@ -1,5 +1,5 @@
-import axios from 'axios';
-import Error from 'next/error';
+import axios from "axios";
+import Error from "next/error";
 
 export async function GetStudent({ studentId }) {
   try {
@@ -10,13 +10,13 @@ export async function GetStudent({ studentId }) {
           studentId: studentId,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
     return student;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -31,14 +31,14 @@ export async function UpdateStudent({ formData, studentId }) {
           studentId: studentId,
         },
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
-      },
+      }
     );
 
     return updateStudent;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -54,14 +54,14 @@ export async function setStudentPasswordForStudentService({
       { password, studentId, confirmPassword },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     return updateStudent.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -78,14 +78,14 @@ export async function VeriflyPasswordForStudentService({
           studentId,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     return verifly.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

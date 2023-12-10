@@ -1,53 +1,53 @@
-import { useQuery } from '@tanstack/react-query';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import React, { Fragment, useEffect, useState } from 'react';
-import { StudentGetClassroom } from '../../../service/student/classroom';
-import { Skeleton } from '@mui/material';
+import { useQuery } from "@tanstack/react-query";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import React, { Fragment, useEffect, useState } from "react";
+import { StudentGetClassroom } from "../../../service/student/classroom";
+import { Skeleton } from "@mui/material";
 import {
   ReadQrCodeAttendance,
   UpdateQrCodeAttendance,
-} from '../../../service/student/attendance';
-import { Combobox, Transition } from '@headlessui/react';
-import { BsCheck2 } from 'react-icons/bs';
-import { HiChevronUpDown } from 'react-icons/hi2';
-import { AiFillCheckCircle } from 'react-icons/ai';
-import { MdOutlineArrowBackIos } from 'react-icons/md';
-import Loading from '../../../components/loading/loading';
-import Swal from 'sweetalert2';
-const progressMenus = [{ title: 'เลือกชื่อ' }, { title: 'เช็คชื่อ' }];
+} from "../../../service/student/attendance";
+import { Combobox, Transition } from "@headlessui/react";
+import { BsCheck2 } from "react-icons/bs";
+import { HiChevronUpDown } from "react-icons/hi2";
+import { AiFillCheckCircle } from "react-icons/ai";
+import { MdOutlineArrowBackIos } from "react-icons/md";
+import Loading from "../../../components/loading/loading";
+import Swal from "sweetalert2";
+const progressMenus = [{ title: "เลือกชื่อ" }, { title: "เช็คชื่อ" }];
 const checkList = [
   {
-    titleThai: 'เข้าเรียน',
-    titleEnglish: 'Present',
-    bgColor: 'bg-green-500',
+    titleThai: "เข้าเรียน",
+    titleEnglish: "Present",
+    bgColor: "bg-green-500",
   },
   {
-    titleThai: 'ลา',
-    titleEnglish: 'Take a leave',
-    bgColor: 'bg-yellow-500',
+    titleThai: "ลา",
+    titleEnglish: "Take a leave",
+    bgColor: "bg-yellow-500",
   },
   {
-    titleThai: 'ป่วย',
-    titleEnglish: 'sick',
-    bgColor: 'bg-blue-500',
+    titleThai: "ป่วย",
+    titleEnglish: "sick",
+    bgColor: "bg-blue-500",
   },
   {
-    titleThai: 'ขาด',
-    titleEnglish: 'Absent',
-    bgColor: 'bg-red-500',
+    titleThai: "ขาด",
+    titleEnglish: "Absent",
+    bgColor: "bg-red-500",
   },
   {
-    titleThai: 'สาย',
-    titleEnglish: 'late',
-    bgColor: 'bg-orange-500',
+    titleThai: "สาย",
+    titleEnglish: "late",
+    bgColor: "bg-orange-500",
   },
 ];
 function AttendanceQrCode() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [people, setPeople] = useState();
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [reCheck, setReCheck] = useState();
   const [activeAttendance, setActiveAttendance] = useState(0);
   const [selected, setSelected] = useState(people?.[0]);
@@ -56,14 +56,14 @@ function AttendanceQrCode() {
   const [timeLeft, setTimeLeft] = useState();
   const [progress, setProgress] = useState(-1);
   const classroom = useQuery(
-    ['classroom'],
+    ["classroom"],
     () => StudentGetClassroom({ classroomId: router.query.classroomId }),
     {
       enabled: false,
-    },
+    }
   );
   const qrCode = useQuery(
-    ['qrCode'],
+    ["qrCode"],
     () =>
       ReadQrCodeAttendance({
         classroomId: router.query.classroomId,
@@ -71,7 +71,7 @@ function AttendanceQrCode() {
       }),
     {
       enabled: false,
-    },
+    }
   );
   useEffect(() => {
     setExpireAt(() => qrCode?.data?.qrCodeAttendance?.exipreAt);
@@ -84,16 +84,16 @@ function AttendanceQrCode() {
 
     // Check if the target date has already passed
     if (timeDifference <= 0) {
-      return 'Expired'; // Return a message indicating expiration
+      return "Expired"; // Return a message indicating expiration
     }
 
     // Calculate time units
     const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
     const hours = Math.floor(
-      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
     );
     const minutes = Math.floor(
-      (timeDifference % (1000 * 60 * 60)) / (1000 * 60),
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
     );
     const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
@@ -115,19 +115,19 @@ function AttendanceQrCode() {
   }, [expireAt]);
 
   const date = new Date(qrCode?.data?.qrCodeAttendance?.date);
-  const formattedDate = date.toLocaleDateString('th-TH', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+  const formattedDate = date.toLocaleDateString("th-TH", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
     hour12: false, // Use 24-hour format
   });
 
   // set people
   useEffect(() => {
     if (qrCode.isError) {
-      setPeople('');
+      setPeople("");
     }
     setPeople(() => qrCode?.data?.student);
   }, [qrCode.data]);
@@ -150,13 +150,13 @@ function AttendanceQrCode() {
   }, [router.isReady]);
 
   const filteredPeople =
-    query === ''
+    query === ""
       ? people
       : people?.filter((person) =>
           person.student.firstName
             .toLowerCase()
-            .replace(/\s+/g, '')
-            .includes(query.toLowerCase().replace(/\s+/g, '')),
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""))
         );
 
   const handleCheckAttendance = async () => {
@@ -168,16 +168,16 @@ function AttendanceQrCode() {
         attendanceQRCodeId: qrCode.data.qrCodeAttendance.id,
         attendance: reCheck,
       });
-      Swal.fire('สำเร็จ', 'เช็คชื่อเรีนยร้อย', 'success');
+      Swal.fire("สำเร็จ", "เช็คชื่อเรีนยร้อย", "success");
       setIsLoading(() => false);
     } catch (err) {
       Swal.fire(
-        'เกิดข้อผิดพลาด',
+        "เกิดข้อผิดพลาด",
         err?.props?.response?.data?.message?.toString(),
-        'error',
+        "error"
       );
       setIsLoading(() => false);
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -221,7 +221,7 @@ function AttendanceQrCode() {
           </h4>
           <h4
             className={`text-base font-normal text-center ${
-              qrCode.isError ? 'bg-red-600' : 'bg-blue-500'
+              qrCode.isError ? "bg-red-600" : "bg-blue-500"
             }  rounded-md 
              text-white  truncate w-52  `}
           >
@@ -240,7 +240,7 @@ function AttendanceQrCode() {
           {chooseStudent
             ? `${selected.student.firstName} ${selected.student?.lastName}`
             : qrCode.isError
-            ? 'หมดเวลาการเช็คชื่อ'
+            ? "หมดเวลาการเช็คชื่อ"
             : `โปรดเลือกชื่อของตัวเอง`}
         </span>
         {qrCode.isLoading ? (
@@ -309,7 +309,7 @@ function AttendanceQrCode() {
                   ${attendance.bgColor}
                   w-max min-w-[5rem] h-8 text-center flex items-center justify-center text-white rounded-lg cursor-pointer 
                   border-2 border-solid hover:scale-105 transition duration-150 ${
-                    activeAttendance === index ? 'border-black' : 'border-white'
+                    activeAttendance === index ? "border-black" : "border-white"
                   }
                   
                   `}
@@ -373,14 +373,14 @@ function AttendanceQrCode() {
                 leave="transition ease-in duration-100"
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
-                afterLeave={() => setQuery('')}
+                afterLeave={() => setQuery("")}
               >
                 <Combobox.Options
                   className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md
                list-none pl-0 bg-white py-1 text-base shadow-lg ring-1 ring-black
                 ring-opacity-5 focus:outline-none sm:text-sm"
                 >
-                  {filteredPeople?.length === 0 && query !== '' ? (
+                  {filteredPeople?.length === 0 && query !== "" ? (
                     <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                       Nothing found.
                     </div>
@@ -391,8 +391,8 @@ function AttendanceQrCode() {
                         className={({ active }) =>
                           `relative cursor-pointer w-full select-none z-40 py-2 pl-10 pr-4 ${
                             active
-                              ? 'bg-[#EDBA02] text-white'
-                              : 'text-gray-900 bg-white'
+                              ? "bg-[#EDBA02] text-white"
+                              : "text-gray-900 bg-white"
                           }`
                         }
                         value={person}
@@ -401,12 +401,12 @@ function AttendanceQrCode() {
                           <>
                             <div
                               className={` w-full flex border-b-[1px] border-black py-1 justify-between ${
-                                selected ? 'font-medium' : 'font-normal'
+                                selected ? "font-medium" : "font-normal"
                               }`}
                             >
                               <div>
-                                {person.student.firstName}{' '}
-                                {person?.student.lastName}{' '}
+                                {person.student.firstName}{" "}
+                                {person?.student.lastName}{" "}
                               </div>
                               {person.isCheck === true && (
                                 <div className="bg-green-400 rounded-lg p-1">
@@ -417,7 +417,7 @@ function AttendanceQrCode() {
                             {selected ? (
                               <span
                                 className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                  active ? 'text-white' : 'text-teal-600'
+                                  active ? "text-white" : "text-teal-600"
                                 }`}
                               >
                                 <BsCheck2
@@ -445,7 +445,7 @@ function AttendanceQrCode() {
                 <span>{list.title}</span>
                 <div
                   className={`w-40 h-[2px]  ${
-                    progress >= index ? 'bg-green-600' : 'bg-gray-400'
+                    progress >= index ? "bg-green-600" : "bg-gray-400"
                   }`}
                 ></div>
               </li>

@@ -1,5 +1,5 @@
-import axios from 'axios';
-import Error from 'next/error';
+import axios from "axios";
+import Error from "next/error";
 
 export async function StudentGetAllScore({ studentId, classroomId }) {
   try {
@@ -11,13 +11,13 @@ export async function StudentGetAllScore({ studentId, classroomId }) {
           classroomId: classroomId,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
     return scores.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

@@ -1,5 +1,5 @@
-import axios from 'axios';
-import Error from 'next/error';
+import axios from "axios";
+import Error from "next/error";
 
 export async function GetComments({ assignmentId, studentId }) {
   try {
@@ -14,14 +14,14 @@ export async function GetComments({ assignmentId, studentId }) {
           studentId: studentId,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     return comments;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -42,14 +42,14 @@ export async function PostComment({ assignmentId, studentId, body }) {
           studentId: studentId,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     return comments;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

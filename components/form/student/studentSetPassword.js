@@ -5,12 +5,12 @@ import {
   InputLabel,
   OutlinedInput,
   TextField,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import Swal from 'sweetalert2';
-import { setStudentPasswordForStudentService } from '../../../service/student/student';
-import { useRouter } from 'next/router';
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import Swal from "sweetalert2";
+import { setStudentPasswordForStudentService } from "../../../service/student/student";
+import { useRouter } from "next/router";
 
 function StudentSetPassword({
   setTriggerNewPassword,
@@ -21,9 +21,9 @@ function StudentSetPassword({
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setTeacherData] = useState({
-    password: '',
+    password: "",
   });
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [require, setRequire] = useState(true);
 
@@ -48,7 +48,7 @@ function StudentSetPassword({
   };
 
   useEffect(() => {
-    if (formData.password !== '') {
+    if (formData.password !== "") {
       setRequire(() => false);
     } else {
       setRequire(() => true);
@@ -62,8 +62,8 @@ function StudentSetPassword({
     try {
       e.preventDefault();
       Swal.fire({
-        title: 'กำลังโหลด...',
-        html: 'รอสักครู่นะครับ...',
+        title: "กำลังโหลด...",
+        html: "รอสักครู่นะครับ...",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
@@ -78,10 +78,10 @@ function StudentSetPassword({
 
       setLoading(true);
       const serializedClassroomCode = JSON.stringify(
-        router.query.classroomCode,
+        router.query.classroomCode
       );
-      localStorage.setItem('classroomCode', serializedClassroomCode);
-      document.body.style.overflow = 'auto';
+      localStorage.setItem("classroomCode", serializedClassroomCode);
+      document.body.style.overflow = "auto";
       setTriggerNewPassword(() => false);
       router.push({
         pathname: `/classroom/student/${studentId}`,
@@ -89,13 +89,13 @@ function StudentSetPassword({
           classroomId: classroom?.data?.data?.classroom?.id,
         },
       });
-      Swal.fire('สำเร็จ', '', 'success');
+      Swal.fire("สำเร็จ", "", "success");
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire(
-        'Error!',
+        "Error!",
         err?.props?.response?.data?.message?.toString(),
-        'error',
+        "error"
       );
     }
   };
@@ -107,7 +107,7 @@ function StudentSetPassword({
        ring-black p-5 flex flex-col justify-center items-center bg-white"
       >
         <FormControl
-          sx={{ m: 1, width: '100%' }}
+          sx={{ m: 1, width: "100%" }}
           variant="outlined"
           error={passwordError}
         >
@@ -117,7 +117,7 @@ function StudentSetPassword({
           <OutlinedInput
             autoComplete="on"
             id="outlined-adornment-password"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={handleChange}
@@ -138,14 +138,14 @@ function StudentSetPassword({
           <span>ความยาวรหัสผ่าน 8 ตัวขึ้นไป</span>
           {passwordError && <p className="text-red-600">รหัสผ่านไม่ตรงกัน</p>}
         </FormControl>
-        <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+        <FormControl sx={{ m: 1, width: "100%" }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-confirm-password">
             ยืนยันรหัสผ่าน
           </InputLabel>
           <OutlinedInput
             autoComplete="on"
             id="outlined-adornment-confirm-password"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
             onBlur={validatePassword}
@@ -174,7 +174,7 @@ function StudentSetPassword({
       </form>
       <footer
         onClick={() => {
-          document.body.style.overflow = 'auto';
+          document.body.style.overflow = "auto";
           setTriggerNewPassword(() => false);
         }}
         className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/30 "

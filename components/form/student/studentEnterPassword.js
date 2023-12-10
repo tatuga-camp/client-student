@@ -5,15 +5,15 @@ import {
   InputLabel,
   OutlinedInput,
   TextField,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import Swal from 'sweetalert2';
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import Swal from "sweetalert2";
 import {
   VeriflyPasswordForStudentService,
   setStudentPasswordForStudentService,
-} from '../../../service/student/student';
-import { useRouter } from 'next/router';
+} from "../../../service/student/student";
+import { useRouter } from "next/router";
 
 function StudentEnterPassword({
   setTriggerEnterPassword,
@@ -24,7 +24,7 @@ function StudentEnterPassword({
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setTeacherData] = useState({
-    password: '',
+    password: "",
   });
 
   const [passwordError, setPasswordError] = useState(false);
@@ -43,7 +43,7 @@ function StudentEnterPassword({
   };
 
   useEffect(() => {
-    if (formData.password !== '') {
+    if (formData.password !== "") {
       setRequire(() => false);
     } else {
       setRequire(() => true);
@@ -57,8 +57,8 @@ function StudentEnterPassword({
     try {
       e.preventDefault();
       Swal.fire({
-        title: 'กำลังโหลด...',
-        html: 'รอสักครู่นะครับ...',
+        title: "กำลังโหลด...",
+        html: "รอสักครู่นะครับ...",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
@@ -71,10 +71,10 @@ function StudentEnterPassword({
       });
       setLoading(true);
       const serializedClassroomCode = JSON.stringify(
-        router.query.classroomCode,
+        router.query.classroomCode
       );
-      localStorage.setItem('classroomCode', serializedClassroomCode);
-      document.body.style.overflow = 'auto';
+      localStorage.setItem("classroomCode", serializedClassroomCode);
+      document.body.style.overflow = "auto";
       setTriggerEnterPassword(() => false);
       router.push({
         pathname: `/classroom/student/${studentId}`,
@@ -82,13 +82,13 @@ function StudentEnterPassword({
           classroomId: classroom?.data?.data?.classroom?.id,
         },
       });
-      Swal.fire('สำเร็จ', '', 'success');
+      Swal.fire("สำเร็จ", "", "success");
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire(
-        'Error!',
+        "Error!",
         err?.props?.response?.data?.message?.toString(),
-        'error',
+        "error"
       );
     }
   };
@@ -100,7 +100,7 @@ function StudentEnterPassword({
          ring-black p-5 flex flex-col justify-center items-center bg-white"
       >
         <FormControl
-          sx={{ m: 1, width: '100%' }}
+          sx={{ m: 1, width: "100%" }}
           variant="outlined"
           error={passwordError}
         >
@@ -110,7 +110,7 @@ function StudentEnterPassword({
           <OutlinedInput
             autoComplete="on"
             id="outlined-adornment-password"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={handleChange}
@@ -151,7 +151,7 @@ function StudentEnterPassword({
       </form>
       <footer
         onClick={() => {
-          document.body.style.overflow = 'auto';
+          document.body.style.overflow = "auto";
           setTriggerEnterPassword(() => false);
         }}
         className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/30 "

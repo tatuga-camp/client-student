@@ -1,5 +1,5 @@
-import axios from 'axios';
-import Error from 'next/error';
+import axios from "axios";
+import Error from "next/error";
 export async function GetAttendances({ studentId, classroomId }) {
   try {
     const attendances = await axios.get(
@@ -10,13 +10,13 @@ export async function GetAttendances({ studentId, classroomId }) {
           classroomId: classroomId,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
     return attendances;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -34,14 +34,14 @@ export async function ReadQrCodeAttendance({
           classroomId: classroomId,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     return attendances.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -66,9 +66,9 @@ export async function UpdateQrCodeAttendance({
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       localStorage.setItem(`${attendanceQRCodeId}`, attendanceQRCodeId);
@@ -85,9 +85,9 @@ export async function UpdateQrCodeAttendance({
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       localStorage.setItem(`${attendanceQRCodeId}`, attendanceQRCodeId);
@@ -95,7 +95,7 @@ export async function UpdateQrCodeAttendance({
       return attendances.data;
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

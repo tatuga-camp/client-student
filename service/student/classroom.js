@@ -1,5 +1,5 @@
-import axios from 'axios';
-import Error from 'next/error';
+import axios from "axios";
+import Error from "next/error";
 
 export async function JoinClassroom({ classroomCode }) {
   try {
@@ -13,13 +13,13 @@ export async function JoinClassroom({ classroomCode }) {
           classroomCode: classroomCode,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
     return classrooms;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -36,13 +36,13 @@ export async function StudentGetClassroom({ classroomId }) {
           classroomId: classroomId,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
     return classrooms.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

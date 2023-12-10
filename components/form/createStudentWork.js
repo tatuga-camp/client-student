@@ -1,14 +1,14 @@
-import { Editor } from '@tinymce/tinymce-react';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { AiOutlineSend } from 'react-icons/ai';
-import { BiChevronsLeft } from 'react-icons/bi';
-import { FcCancel } from 'react-icons/fc';
-import Swal from 'sweetalert2';
-import Loading from '../loading/loading';
-import { SummitWorkWithWorkSheet } from '../../service/student/assignment';
-import { Skeleton } from '@mui/material';
-import { UpdateStudentWorkSheetService } from '../../service/student/studentWork';
+import { Editor } from "@tinymce/tinymce-react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { AiOutlineSend } from "react-icons/ai";
+import { BiChevronsLeft } from "react-icons/bi";
+import { FcCancel } from "react-icons/fc";
+import Swal from "sweetalert2";
+import Loading from "../loading/loading";
+import { SummitWorkWithWorkSheet } from "../../service/student/assignment";
+import { Skeleton } from "@mui/material";
+import { UpdateStudentWorkSheetService } from "../../service/student/studentWork";
 
 function CreateStudentWork({
   body,
@@ -29,7 +29,7 @@ function CreateStudentWork({
     router.beforePopState(({ as }) => {
       if (as !== router.asPath) {
         setTriggerCreateStudentWork(() => false);
-        window.history.pushState(null, '', router.asPath);
+        window.history.pushState(null, "", router.asPath);
         return false;
       }
       return true;
@@ -44,8 +44,8 @@ function CreateStudentWork({
     try {
       e.preventDefault();
       Swal.fire({
-        title: 'กำลังส่งงาน...',
-        html: 'รอสักครู่นะครับ...',
+        title: "กำลังส่งงาน...",
+        html: "รอสักครู่นะครับ...",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
@@ -61,29 +61,29 @@ function CreateStudentWork({
 
       setTriggerCreateStudentWork(() => false);
 
-      Swal.fire('success', 'Sucessfully Summited Work', 'success');
+      Swal.fire("success", "Sucessfully Summited Work", "success");
     } catch (err) {
       if (
         err?.props?.response?.data?.message ===
         "student's already summit their work"
       ) {
         Swal.fire(
-          'error',
-          'นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม',
-          'error',
+          "error",
+          "นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม",
+          "error"
         );
       } else {
-        Swal.fire('error', err?.props?.response?.message, 'error');
+        Swal.fire("error", err?.props?.response?.message, "error");
       }
-      console.log(err);
+      console.error(err);
     }
   };
 
   const handleUpdateStudentWork = async () => {
     try {
       Swal.fire({
-        title: 'กำลังอัพเดทงาน...',
-        html: 'รอสักครู่นะครับ...',
+        title: "กำลังอัพเดทงาน...",
+        html: "รอสักครู่นะครับ...",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
@@ -98,14 +98,14 @@ function CreateStudentWork({
 
       setTriggerCreateStudentWork(() => false);
 
-      Swal.fire('success', 'Sucessfully Updated Work', 'success');
+      Swal.fire("success", "Sucessfully Updated Work", "success");
     } catch (err) {
-      console.log(err);
+      console.error(err);
 
       Swal.fire(
-        'error',
+        "error",
         err?.props?.response?.data?.message.toString(),
-        'error',
+        "error"
       );
     }
   };
@@ -115,48 +115,48 @@ function CreateStudentWork({
       <div className="h-4/6  w-11/12 md:w-7/12 ">
         {loadingTiny ? (
           <Skeleton width="100%" height="100%" />
-        ) : fetchStudentWork?.data?.data?.status === 'no-work' ? (
+        ) : fetchStudentWork?.data?.data?.status === "no-work" ? (
           <Editor
             apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
             textareaName="body"
             init={{
               link_context_toolbar: true,
               setup: function (editor) {
-                editor.on('init', function () {
+                editor.on("init", function () {
                   setLoadingTiny(() => false);
                 });
               },
-              placeholder: 'no work',
-              height: '100%',
-              width: '100%',
-              toolbar_location: 'top',
+              placeholder: "no work",
+              height: "100%",
+              width: "100%",
+              toolbar_location: "top",
               menubar: true,
               paste_data_images: false,
               plugins: [
-                'advlist',
-                'autolink',
-                'lists',
-                'link',
-                'charmap',
-                'preview',
-                'anchor',
-                'searchreplace',
-                'visualblocks',
-                'code',
-                'fullscreen',
-                'insertdatetime',
-                'media',
-                'table',
-                'help',
-                'wordcount',
+                "advlist",
+                "autolink",
+                "lists",
+                "link",
+                "charmap",
+                "preview",
+                "anchor",
+                "searchreplace",
+                "visualblocks",
+                "code",
+                "fullscreen",
+                "insertdatetime",
+                "media",
+                "table",
+                "help",
+                "wordcount",
               ],
               toolbar:
-                'undo redo | formatselect | blocks | ' +
-                'bold italic backcolor | alignleft aligncenter ' +
-                'alignright alignjustify | bullist numlist outdent indent | ' +
-                'removeformat | help | link ',
+                "undo redo | formatselect | blocks | " +
+                "bold italic backcolor | alignleft aligncenter " +
+                "alignright alignjustify | bullist numlist outdent indent | " +
+                "removeformat | help | link ",
               content_style:
-                'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
             }}
             value={assignmentBody}
             onEditorChange={(newText) => {
@@ -170,41 +170,41 @@ function CreateStudentWork({
             init={{
               link_context_toolbar: true,
               setup: function (editor) {
-                editor.on('init', function () {
+                editor.on("init", function () {
                   setLoadingTiny(() => false);
                 });
               },
-              placeholder: 'have work',
-              height: '100%',
-              width: '100%',
-              toolbar_location: 'top',
+              placeholder: "have work",
+              height: "100%",
+              width: "100%",
+              toolbar_location: "top",
               menubar: true,
               paste_data_images: false,
               plugins: [
-                'advlist',
-                'autolink',
-                'lists',
-                'link',
-                'charmap',
-                'preview',
-                'anchor',
-                'searchreplace',
-                'visualblocks',
-                'code',
-                'fullscreen',
-                'insertdatetime',
-                'media',
-                'table',
-                'help',
-                'wordcount',
+                "advlist",
+                "autolink",
+                "lists",
+                "link",
+                "charmap",
+                "preview",
+                "anchor",
+                "searchreplace",
+                "visualblocks",
+                "code",
+                "fullscreen",
+                "insertdatetime",
+                "media",
+                "table",
+                "help",
+                "wordcount",
               ],
               toolbar:
-                'undo redo | formatselect | blocks | ' +
-                'bold italic backcolor | alignleft aligncenter ' +
-                'alignright alignjustify | bullist numlist outdent indent | ' +
-                'removeformat | help | link ',
+                "undo redo | formatselect | blocks | " +
+                "bold italic backcolor | alignleft aligncenter " +
+                "alignright alignjustify | bullist numlist outdent indent | " +
+                "removeformat | help | link ",
               content_style:
-                'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
             }}
             value={updateAssignmentBody}
             onEditorChange={(newText) => {
@@ -223,7 +223,7 @@ function CreateStudentWork({
         >
           <span className="text-sm uppercase">ยกเลิก</span>
         </button>
-        {fetchStudentWork?.data?.data?.status !== 'no-work' ? (
+        {fetchStudentWork?.data?.data?.status !== "no-work" ? (
           <button
             onClick={handleUpdateStudentWork}
             className="w-28 bg-green-400 text-green-900 hover:bg-green-500 transition duration-150 active:ring-2 ring-black

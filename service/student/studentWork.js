@@ -1,5 +1,5 @@
-import axios from 'axios';
-import Error from 'next/error';
+import axios from "axios";
+import Error from "next/error";
 
 export async function UpdateStudentWorkSheetService({ studentWorkId, body }) {
   try {
@@ -8,13 +8,13 @@ export async function UpdateStudentWorkSheetService({ studentWorkId, body }) {
       { studentWorkId, body },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     );
     return studentWork.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
