@@ -1,7 +1,9 @@
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const AdBannerStudent = (props) => {
+  const [isUnfilled, setIsUnfilled] = useState(false); // Set to true initially
+
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -15,8 +17,8 @@ const AdBannerStudent = (props) => {
       <ins
         className="adsbygoogle adbanner-customize"
         style={{
-          display: 'block',
-          overflow: 'hidden',
+          display: "block",
+          overflow: "hidden",
         }}
         data-ad-client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}
         {...props}

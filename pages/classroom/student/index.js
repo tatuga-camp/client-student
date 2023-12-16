@@ -38,6 +38,13 @@ function Index() {
       enabled: false,
     }
   );
+
+  //set swal aleart when get query of redirect success
+  useEffect(() => {
+    if (rounter.query.redirect === "success") {
+      Swal.fire({ icon: "success", timer: 500 });
+    }
+  }, [rounter]);
   // set people
   useEffect(() => {
     if (classroom.isError) {

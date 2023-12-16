@@ -1,15 +1,28 @@
+import { useRouter } from "next/router";
 import React from "react";
 
 function index() {
-  return <div>index</div>;
+  const router = useRouter();
+  useEffect(() => {
+    Swal.fire({
+      title: "ไม่พบหน้านี้",
+      html: "กำลังนำคุณไปหน้าหลัก...",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      icon: "warning",
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    router.push({
+      pathname: "/classroom/student",
+      query: {
+        redirect: "success",
+      },
+    });
+  }, []);
+
+  return <div className="bg-blue-600 w-screen h-screen"></div>;
 }
 
 export default index;
-export async function getServerSideProps(ctx) {
-  return {
-    redirect: {
-      permanent: false,
-      destination: "/classroom/student",
-    },
-  };
-}

@@ -27,7 +27,7 @@ const nextConfig = {
     //largePageDataBytes: 128 * 1000, // 128KB by default
     largePageDataBytes: 200 * 1000,
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
   images: {
     domains: [
       "source.unsplash.com",
