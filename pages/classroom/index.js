@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
+import Swal from "sweetalert2";
 
 function Index() {
   const router = useRouter();
