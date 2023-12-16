@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Swal from "sweetalert2";
 
-function index() {
+function Index() {
   const router = useRouter();
   useEffect(() => {
     Swal.fire({
@@ -26,4 +26,4 @@ function index() {
   return <div className="bg-blue-600 w-screen h-screen"></div>;
 }
 
-export default index;
+export default Index;
