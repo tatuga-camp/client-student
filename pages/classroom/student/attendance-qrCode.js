@@ -168,7 +168,7 @@ function AttendanceQrCode() {
         attendanceQRCodeId: qrCode.data.qrCodeAttendance.id,
         attendance: reCheck,
       });
-      Swal.fire("สำเร็จ", "เช็คชื่อเรีนยร้อย", "success");
+      Swal.fire("สำเร็จ", "เช็คชื่อเรียบร้อย", "success");
       setIsLoading(() => false);
     } catch (err) {
       Swal.fire(
