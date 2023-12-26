@@ -1,27 +1,246 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;600;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+ins.adsbygoogle[data-ad-status="unfilled"] ~ .adsCancel {
+  display: none !important;
+}
+* {
+  margin: 0px;
+}
+@font-face {
+  font-family: "MoreSugar";
+  font-display: swap;
+  src: url("/MoreSugar-Regular.otf");
+}
+@font-face {
+  font-display: swap;
+  font-family: "LessSugar";
+  src: url("/MoreSugar-Thin.otf");
+}
+
+.MoreSugar {
+  font-family: "MoreSugar";
+}
+.LessSugar {
+  font-family: "LessSugar";
+}
+
+.showdowTop {
+  filter: drop-shadow(0px -0.5px 10px #00000070);
+}
+.heroANimation {
+  --xyz-rotate-x: 90deg;
+  --xyz-rotate-z: -180deg;
+  --xyz-origin: -200%;
+  --xyz-stagger: 0.1s;
+  --xyz-duration: 0.75s;
+  --xyz-perspective: 100px;
+  --xyz-translate-z: 100px;
+  --xyz-translate-y: 10vh;
+}
+
+.englishLevel {
+  --xyz-translate-y: -350%;
+  --xyz-ease: cubic-bezier(0.5, -1.5, 0.5, 1.5);
+}
+
+.pictureZooom:hover {
+  transform: scale(1.5);
+}
+
+.pictureZooom2:hover {
+  transform: scale(1.2);
+}
+
+.addBulr {
+  filter: blur(2px);
+}
+
+.BlurHover:hover {
+  filter: blur(2px);
+}
+.Fixbboder {
+  border-width: 10px;
+  border-color: rgb(17, 24, 39);
+}
+
+.underLineHover {
+  position: relative;
+}
+
+.underLineHover::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  background-color: #edba02;
+  bottom: 0;
+  left: 0;
+  transform-origin: right;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.underLineHover:hover::before {
+  transform-origin: left;
+  transform: scaleX(1);
+}
+
+.spectrum-background {
+  background: linear-gradient(red, transparent),
+    linear-gradient(to top left, lime, transparent),
+    linear-gradient(to top right, blue, transparent);
+  background-blend-mode: screen;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 20px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #f7f4ed;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #2c7cd1;
+  border-radius: 100vh;
+  border: 3px solid #f6f7ed;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #c0a0b9;
+}
+.scroll-smooth {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+.hide {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}
+
+.this-will-not-be-read {
+  display: none !important;
+}
+
+.popup {
+  animation-name: popupAnimation;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes popupAnimation {
+  0% {
+    transform: translateY(3rem);
+    scale: 0;
+    opacity: 0;
+  }
+  25% {
+    opacity: 20;
+  }
+  50% {
+    transform: translateY(0rem);
+    scale: 1;
+    opacity: 100;
+  }
+  75% {
+    transform: translateY(0rem);
+    scale: 1;
+    opacity: 100;
+  }
+  100% {
+    transform: translateY(0rem);
+    scale: 1;
+    opacity: 100;
+  }
+}
+/* Targeting only anchor tags with the "custom-link" class */
+a {
+  color: blue;
+  text-decoration: underline;
+}
+
+input[type="text"]:focus ~ .input-text,
+input[type="text"]:not(:placeholder-shown) ~ .input-text {
+  @apply transform -translate-y-6 -translate-x-2 scale-75;
+}
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.fade-mask {
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1), transparent 90%);
+}
+.fade-mask-short {
+  mask-image: linear-gradient(
+    180deg,
+    rgba(2, 0, 36, 1) 95%,
+    rgba(116, 116, 117, 0) 100%
+  );
+}
+
+button,
+input[type="submit"],
+input[type="reset"] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.inset-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.swal2-popup {
+  font-size: 0.9rem !important;
+  font-family: Kanit, serif;
+}
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+
+  height: calc((100% - 30px) / 2) !important;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
