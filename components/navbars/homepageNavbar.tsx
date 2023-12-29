@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { currentBrowser } from "../../utils/platforms";
 import Script from "next/script";
 import { Button } from "@mui/material";
-import Listmenu from "../svg/Listmenu";
 import Link from "next/link";
 import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
 import MiniLogo from "../svg/miniLogo";
+import Listmenu from "../svg/listMenu";
 
 function HomepageNavbar() {
   const [brower, setBrower] = useState<string>();

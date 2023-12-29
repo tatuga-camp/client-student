@@ -7,13 +7,13 @@ interface InputGetCommentsService {
   studentId: string;
 }
 type ResponseGetCommentsService = Comment & {
-  studnet: Student;
+  student: Student;
   user: User;
 };
 export async function GetCommentsService({
   assignmentId,
   studentId,
-}: InputGetCommentsService): Promise<ResponseGetCommentsService> {
+}: InputGetCommentsService): Promise<ResponseGetCommentsService[]> {
   try {
     const comments = await axios.get(
       `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/comment/get-comment`,

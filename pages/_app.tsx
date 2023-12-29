@@ -30,6 +30,7 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
 gtag('config', 'G-C308M4051V');`}</Script>
+      <NextTopLoader showSpinner={false} />
       <ReactQueryDevtools initialIsOpen={false} />
       <Component {...pageProps} />
     </QueryClientProvider>
