@@ -93,17 +93,17 @@ function Index() {
           {
             title: "ชิ้นงาน",
             icon: <MdWork />,
-            color: "bg-yellow-400",
+            color: "#EDBA02",
           },
           {
-            title: "ข้อมูลการเข้าเรียน",
+            title: "มาเรียน",
             icon: <HiOutlineHandRaised />,
-            color: "bg-gray-400",
+            color: "#00B451",
           },
           {
             title: "คะแนนรวม",
             icon: <GrScorecard />,
-            color: "bg-blue-400",
+            color: "#9C2CD1",
           },
         ];
       } else {
@@ -114,7 +114,7 @@ function Index() {
             color: "bg-yellow-400",
           },
           {
-            title: "ข้อมูลการเข้าเรียน",
+            title: "การมาเรียน",
             icon: <HiOutlineHandRaised />,
             color: "bg-gray-400",
           },
@@ -253,9 +253,9 @@ function Index() {
           </div>
         </nav>
       </header>
-      <main className="w-full h-max flex   items-center justify-start flex-col  gap-3 relative">
+      <main className="mt-[-4.5rem] w-full h-max flex   items-center justify-start flex-col  gap-3 relative ">
         <header className="flex flex-col justify-center items-center gap-5 md:w-96">
-          <div className=" flex items-center justify-center relative">
+          <div className=" flex items-center justify-center relative ">
             {student?.data?.picture && (
               <div
                 className="w-40 h-40 md:w-52 md:h-52 relative rounded-full
@@ -332,7 +332,7 @@ function Index() {
             </div>
           )}
 
-          <div className="w-full justify-center flex flex-col items-center  text-center">
+          <div className="w-full justify-center flex flex-col items-center  text-center ">
             <div className=" font-Kanit font-normal flex gap-2">
               {student.isFetching ? (
                 <Skeleton variant="text" width={100} />
@@ -346,7 +346,7 @@ function Index() {
               {student.isFetching ? (
                 <Skeleton variant="text" width={200} />
               ) : (
-                <div className="flex gap-4 text-2xl md:text-xl font-semibold text-blue-500">
+                <div className="flex gap-4 text-2xl md:text-xl font-semibold text-[#2C7CD1]">
                   <span>
                     {student?.data?.firstName} {student?.data?.lastName}
                   </span>
@@ -354,26 +354,25 @@ function Index() {
               )}
             </div>
           </div>
-          <div className="flex gap-5 flex-wrap  w-full font-Kanit  justify-center  ">
+          <div className="flex gap-1 flex-wrap  w-full font-Kanit  justify-center  ">
             {menus?.map((menu, index) => {
               return (
+                //Menu btn
                 <button
                   key={index}
                   onClick={() => setActiveMenu(() => index)}
-                  className={`w-max px-2 h-10 rounded-md ${menu.color} ${
+                  className={`w-max px-2 h-10 rounded-md  ${
                     activeMenu === index
-                      ? "ring-2 drop-shadow-lg  ring-white"
-                      : "ring-0"
+                      ? ` drop-shadow-lg  rounded-[21.5px] bg-[${menu.color}]  text-white  `
+                      : `rounded-[21.5px] bg-white text-[${menu.color}]    border-solid border-2 border-[${menu.color}] `
                   }  items-center  flex justify-center hover:scale-110 
-             gap-2 transition duration-150 hover:ring-1 active:ring-2 `}
+             gap-2 transition duration-150 `}
                 >
-                  <div
-                    className="w-8 h-8  bg-white/50 backdrop-blur-md rounded-md flex 
-            items-center justify-center text-black"
-                  >
+                  {/* เหลือแก้ icon ให้เหมือน figma */}
+                  <div className="w-8 h-8  flex items-center justify-center">
                     {menu.icon}
                   </div>
-                  <span className="text-md text-black  font-Poppins font-normal">
+                  <span className="mr-3 -ml-2">
                     {menu.title}
                   </span>
                 </button>
@@ -388,7 +387,7 @@ function Index() {
           </div>
         )}
 
-        <div className="flex flex-col justify-start items-center  w-full mt-8 max-w-xl	">
+        <div className="flex flex-col justify-center items-center  w-full mt-8 max-w-xl">
           {activeMenu === 1 && <AttendanceStatus attendances={attendances} />}
           {assignments.isLoading && (
             <div className="flex flex-col justify-center items-center gap-5">
