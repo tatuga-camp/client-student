@@ -189,7 +189,7 @@ function Index() {
   };
   return (
     <div
-      className={` w-full bg-slate-100  ${
+      className={` w-full bg-white  ${
         assignments?.data?.length && assignments?.data?.length > 2
           ? "h-full min-h-screen"
           : "h-screen"
@@ -337,7 +337,7 @@ function Index() {
               {student.isFetching ? (
                 <Skeleton variant="text" width={100} />
               ) : (
-                <span className="text-black">
+                <span className="text-black text-xl">
                   เลขที่ {student?.data?.number}
                 </span>
               )}
@@ -363,12 +363,12 @@ function Index() {
                   onClick={() => setActiveMenu(() => index)}
                   className={`w-max px-2 h-10 rounded-md  ${
                     activeMenu === index
-                      ? ` drop-shadow-lg  rounded-[21.5px] bg-[${menu.color}]  text-white  `
-                      : `rounded-[21.5px] bg-white text-[${menu.color}]    border-solid border-2 border-[${menu.color}] `
+                      ? ` drop-shadow-lg  rounded-[1.344rem] bg-[${menu.color}]  text-white  `
+                      : `rounded-[1.344rem] bg-white text-[${menu.color}] border-solid border-2 border-[${menu.color}] `
                   }  items-center  flex justify-center hover:scale-110 
              gap-2 transition duration-150 `}
                 >
-                  {/* เหลือแก้ icon ให้เหมือน figma */}
+                  
                   <div className="w-8 h-8  flex items-center justify-center">
                     {menu.icon}
                   </div>
