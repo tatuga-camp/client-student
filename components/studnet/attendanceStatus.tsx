@@ -63,7 +63,7 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
                 {/* Chart */}
               <div className="w-[150px] h-[150px]">
                 <Pie 
-                  data={data} options={option}
+                  data={data} 
                  />
               </div>
 
@@ -76,7 +76,7 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
                   </span>
                   <span className="text-sm"> 
                     จำนวนคาบเรียน 
-                    {attendances?.data?.statistics?.sum} คาบ
+                    {attendances?.data?.statistics?.sum  || 0} คาบ
                   </span>
 
                   <ul className="ml-3 mt-2 text-sm pr-6">
@@ -86,7 +86,8 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
                         <p>มาเรียน </p>
                       </div>
                       <span>
-                        {attendances?.data?.statistics?.number?.present}  ครั้ง
+                        {attendances?.data?.statistics?.number?.present  || 0}  
+                        <span className="ml-2">ครั้ง</span>
                       </span>
                     </li>
                     <li className="flex gap-[0.4rem] justify-between">
@@ -95,7 +96,8 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
                         <p>ลา </p>
                       </div>
                       <span>
-                      {attendances?.data?.statistics?.number?.holiday}  ครั้ง
+                      {attendances?.data?.statistics?.number?.holiday  || 0}  
+                      <span className="ml-2">ครั้ง</span>
                       </span>
                     </li>
                     <li className="flex gap-[0.4rem] justify-between">
@@ -104,7 +106,8 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
                         <p>ป่วย </p>
                       </div>
                       <span>
-                      {attendances?.data?.statistics?.number?.sick}  ครั้ง
+                      {attendances?.data?.statistics?.number?.sick  || 0}  
+                      <span className="ml-2">ครั้ง</span>
                       </span>
                     </li>
                     <li className="flex gap-[0.4rem] justify-between">
@@ -113,7 +116,8 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
                         <p>ขาดเรียน </p>
                       </div>
                       <span>
-                      {attendances?.data?.statistics?.number?.absent}  ครั้ง
+                      {attendances?.data?.statistics?.number?.absent  || 0}
+                      <span className="ml-2">ครั้ง</span>
                       </span>
                     </li>
                     <li className="flex gap-[0.4rem] justify-between">
@@ -122,7 +126,8 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
                         <p>มาสาย </p>
                       </div>
                       <span>
-                      {attendances?.data?.statistics?.number?.late} ครั้ง
+                      {attendances?.data?.statistics?.number?.late || 0}
+                      <span className="ml-2">ครั้ง</span>
                       </span>
                     </li>
                     
@@ -230,17 +235,12 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
             return (
               <li
                 key={attendance.id}
-                className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                className="flex  items-center justify-center font-Kanit w-full md:w-full rounded-md gap-1"
               >
-                <div className="flex justify-start items-center ml-5 gap-2">
-                  <div className="w-10 h-10  rounded-full bg-gray-100 flex items-center justify-center">
-                    <div className="flex items-center justify-center text-gray-400 text-3xl">
-                      <BiErrorCircle />
-                    </div>
-                  </div>
+                <div className="flex justify-center items-center rounded-lg w-[220px] h-[30px] bg-[#E8E8E8] text-[#2C7CD1]">
                   <span className=" font-normal text-sm">{formattedDate}</span>
                 </div>
-                <div className="w-max text-center rounded-sm p-2 mr-5 text-sm bg-gray-500 text-white">
+                <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-gray-500  text-white">
                   <span>ไม่มีข้อมูล</span>
                 </div>
               </li>

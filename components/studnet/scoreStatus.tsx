@@ -10,6 +10,39 @@ interface ScoreStatus {
 function ScoreStatus({ totalScore }: ScoreStatus) {
   const [activeScore, setActiveScore] = useState<number | null>();
 
+  const calculateAllAssignmentScore = () => {
+    let total = 0;
+
+    totalScore?.data?.assignments?.forEach((assignment) => {
+      let pureMaxScore = "0"
+
+      if (assignment?.assignment?.percentage) {
+        pureMaxScore = assignment?.assignment.percentage.replace(/%/g, "");
+      } else {
+        pureMaxScore = assignment?.assignment?.maxScore.toFixed(2);
+      }
+
+      total += parseFloat(pureMaxScore);
+    })
+    return total.toFixed(2);
+  }
+
+  const calculateAssignmentScore = () => {
+    let total = 0;
+
+    totalScore?.data?.assignments?.forEach((assignment) => {
+      let score = 0;
+      
+      if (assignment.studentWork){
+        score = assignment.studentWork.score as number;
+      }
+
+      total += score;
+    })
+
+    return total.toFixed(2);
+  }
+
   return (
     <section className="w-full md:mt-5 flex font-Kanit flex-col items-center gap-5 justify-center">
       {totalScore.isLoading ? (
@@ -23,12 +56,11 @@ function ScoreStatus({ totalScore }: ScoreStatus) {
             <div className=" w-24 h-24 text-center flex-col text-white bg-[#00B451] rounded-[1.4rem] flex items-center justify-center border-solid border-2 border-white">
                 <span className="text-xs">คะแนนชิ้นงาน</span>
                 <span className="text-2xl font-Kanit font-semibold">
-                  {/* ###ไม่รู้ว่าคะแนนชิ้นงานใช้ตัวแปรชื่อว่าอะไร */}
-                  {totalScore?.data?.totalScore.toFixed(2)}
+                  {calculateAssignmentScore()}
                 </span>
                 <div className="w-10/12 h-[2px] bg-white"></div>
                 <span className="text-base font-semibold ">
-                    99.00
+                  {calculateAllAssignmentScore()}
                 </span>
             </div>
           </div>
@@ -127,8 +159,9 @@ function ScoreStatus({ totalScore }: ScoreStatus) {
                             </span>
                         </div>
                         {/* Left : Description */}
-                        <div className="pt-1 text-black font-Kanit text-sm mt-2 leading-none ">
-                             Lorem ipsum dolor sit amet.
+                        <div className="pt-1 text-black font-Kanit text-sm mt-2 leading-4 w-[12.5rem] h-[3.125rem] md:w-[18.75rem] overflow-hidden"
+             dangerouslySetInnerHTML={{ __html: assignment.assignment?.description }}>
+                             
                         </div>
 
                    </div>

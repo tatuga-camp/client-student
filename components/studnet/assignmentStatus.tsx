@@ -11,6 +11,7 @@ interface AssignmentStatus {
 }
 function AssignmentStatus({ assignments, student }: AssignmentStatus) {
   const router = useRouter();
+  
   return (
     <section className="flex flex-col items-center justify-center gap-5 mb-5">
       {assignments?.data?.map((assignment) => {
@@ -59,8 +60,9 @@ function AssignmentStatus({ assignments, student }: AssignmentStatus) {
                 </span>
               </div>
               {/* Assignment description */}
-              <div className="pt-1 text-black font-Kanit text-sm mt-2 leading-none ">
-                Lorem ipsum dolor sit amet.
+              <div className="pt-1 text-black font-Kanit text-sm mt-2 leading-4 w-[12.5rem] h-[3.125rem] md:w-[18.75rem] overflow-hidden"
+             dangerouslySetInnerHTML={{ __html: assignment.assignment?.description }}>
+                    
               </div>
             </div>
             {/* Right hand */}
