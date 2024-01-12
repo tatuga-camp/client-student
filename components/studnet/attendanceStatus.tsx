@@ -3,9 +3,10 @@ import React from "react";
 import { ResponseGetAttendancesService } from "../../service/student/attendance";
 import { BiErrorCircle, BiHappyBeaming, BiRun } from "react-icons/bi";
 import { MdCardTravel, MdOutlineMoodBad, MdOutlineSick } from "react-icons/md";
-import {Chart, ArcElement} from 'chart.js'
-Chart.register(ArcElement);
+import {Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 import { Pie } from 'react-chartjs-2';
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 interface AttendanceStatus {
   attendances: UseQueryResult<ResponseGetAttendancesService, Error>;
@@ -13,10 +14,10 @@ interface AttendanceStatus {
 function AttendanceStatus({ attendances }: AttendanceStatus) {
   //!Bug : 
   const data = {
-    labels: ['มาเรียน', 'ลา', 'ป่วย', 'ขาดเรียน','มาสาย'],
+    labels: false,
     datasets: [
       {
-        label: 'ข้อมูลการมาเรียน',
+        label: false,
         data: [
           attendances?.data?.statistics?.number?.present || 0, 
           attendances?.data?.statistics?.number?.holiday || 0,
@@ -36,23 +37,30 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
       },
     ],
   };
-  const option = {
+  const option2 = {
     tooltips: {
-      callbacks: {
-        label: (tooltipItem: any, data: any) => {
-          const dataset = data.datasets[tooltipItem.datasetIndex];
-          const meta = dataset._meta[Object.keys(dataset._meta)[0]];
-          const total = meta.total;
-          const currentValue = dataset.data[tooltipItem.index];
-          const percentage = parseFloat((currentValue / total * 100).toFixed(1));
-          return currentValue + ' (' + percentage + '%)';
+      enabled: false,
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          let sum = 0;
+          let dataArr = ctx.chart.data.datasets[0].data;
+  
+          dataArr.forEach(data => {
+            sum += data;
+          });
+  
+          
+          let percentage = value > 0 ? ((value * 100) / sum).toFixed() + "%" : "";
+  
+          return percentage;
         },
-        title: (tooltipItem: any, data: any) => {
-          return data.labels[tooltipItem[0].index];
-        }
-      }
-    }
+        color: '#fff',
+      },
+    },
   };
+  
   
   
   return (
@@ -62,9 +70,7 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
           <div className="flex">
                 {/* Chart */}
               <div className="w-[150px] h-[150px]">
-                <Pie 
-                  data={data} 
-                 />
+              <Pie options={option2} data={data} />
               </div>
 
               {/* Info stats */}
