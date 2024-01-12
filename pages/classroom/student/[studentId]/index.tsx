@@ -111,12 +111,12 @@ function Index() {
           {
             title: "ชิ้นงาน",
             icon: <MdWork />,
-            color: "bg-yellow-400",
+            color: "#EDBA02",
           },
           {
-            title: "การมาเรียน",
+            title: "มาเรียน",
             icon: <HiOutlineHandRaised />,
-            color: "bg-gray-400",
+            color: "#00B451",
           },
         ];
       }
@@ -368,13 +368,10 @@ function Index() {
                   }  items-center  flex justify-center hover:scale-110 
              gap-2 transition duration-150 `}
                 >
-                  
                   <div className="w-8 h-8  flex items-center justify-center">
                     {menu.icon}
                   </div>
-                  <span className="mr-3 -ml-2">
-                    {menu.title}
-                  </span>
+                  <span className="mr-3 -ml-2">{menu.title}</span>
                 </button>
               );
             })}
