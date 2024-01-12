@@ -9,19 +9,86 @@ interface ScoreStatus {
 }
 function ScoreStatus({ totalScore }: ScoreStatus) {
   const [activeScore, setActiveScore] = useState<number | null>();
+
+  const calculateAllAssignmentScore = () => {
+    let total = 0;
+
+    totalScore?.data?.assignments?.forEach((assignment) => {
+      let pureMaxScore = "0"
+
+      if (assignment?.assignment?.percentage) {
+        pureMaxScore = assignment?.assignment.percentage.replace(/%/g, "");
+      } else {
+        pureMaxScore = assignment?.assignment?.maxScore.toFixed(2);
+      }
+
+      total += parseFloat(pureMaxScore);
+    })
+    return total.toFixed(2);
+  }
+
+  const calculateAssignmentScore = () => {
+    let total = 0;
+
+    totalScore?.data?.assignments?.forEach((assignment) => {
+      let score = 0;
+      
+      if (assignment.studentWork){
+        score = assignment.studentWork.score as number;
+      }
+
+      total += score;
+    })
+
+    return total.toFixed(2);
+  }
+
   return (
     <section className="w-full md:mt-5 flex font-Kanit flex-col items-center gap-5 justify-center">
       {totalScore.isLoading ? (
         <div className="w-24 h-24 ">
-          <Skeleton variant="circular" width={96} height={96} />
+          <Skeleton variant="rounded" width={96} height={96} />
         </div>
       ) : (
-        <div className=" w-24 h-24 text-center flex-col text-pink-900 bg-pink-200 rounded-full flex items-center justify-center">
-          <span className="text-3xl font-Kanit font-bold">
-            {totalScore?.data?.totalScore.toFixed(2)}
-          </span>
-          <span className="text-xs">คะแนนรวม</span>
+        <div className="flex flex-row gap-2">
+          {/* คะแนนชิ้นงาน */}
+          <div className="p-2 bg-[#00B451] rounded-[1.8rem]">
+            <div className=" w-24 h-24 text-center flex-col text-white bg-[#00B451] rounded-[1.4rem] flex items-center justify-center border-solid border-2 border-white">
+                <span className="text-xs">คะแนนชิ้นงาน</span>
+                <span className="text-2xl font-Kanit font-semibold">
+                  {calculateAssignmentScore()}
+                </span>
+                <div className="w-10/12 h-[2px] bg-white"></div>
+                <span className="text-base font-semibold ">
+                  {calculateAllAssignmentScore()}
+                </span>
+            </div>
+          </div>
+            
+          {/* คะแนนพิเศษ */}
+          <div className="p-2 bg-[#EDBA02] rounded-[1.8rem]">
+              <div className=" w-24 h-24 text-center flex-col text-white bg-[#EDBA02] rounded-[1.4rem] flex items-center justify-center border-solid border-2 border-white">
+                <span className="text-xs">คะแนนพิเศษ</span>
+                <span className="text-3xl font-Kanit font-bold">
+                  {totalScore?.data?.speicalScore.toFixed(2)}
+                </span>
+              </div>
+          </div>
+
+          {/* คะแนนรวม */}
+            <div className="p-2 bg-[#9C2CD1] rounded-[1.8rem]">
+              <div className=" w-24 h-24 text-center flex-col text-white bg-[#9C2CD1] rounded-[1.4rem] flex items-center justify-center border-solid border-2 border-white">
+                  <span className="text-xs">คะแนนรวม</span>
+                  <span className="text-3xl font-Kanit font-bold">
+                            {totalScore?.data?.totalScore.toFixed(2)}
+                   </span>
+              </div>
+            </div>
+
+            
         </div>
+       
+        
       )}
       {totalScore.isLoading ? (
         <ul className="w-11/12 grid grid-cols-3 place-items-center gap-4 ">
@@ -35,10 +102,25 @@ function ScoreStatus({ totalScore }: ScoreStatus) {
           <Skeleton width="100%" height={100} variant="rectangular" />
         </ul>
       ) : (
-        <ul className="w-11/12 grid grid-cols-3 place-items-center gap-4 ">
+        <section className="flex flex-col items-center justify-center gap-5 mb-5">
+
           {totalScore?.data?.assignments?.map((assignment, index) => {
             let score: number = 0;
             let pureMaxScore = "0";
+
+            const createDate = new Date(assignment.assignment?.createAt);
+            const formattedCreateDate = createDate.toLocaleDateString("th-TH", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+            });
+          
+            let deadlineDate = new Date(assignment.assignment?.deadline);
+            const formatteDeadlineDate = deadlineDate.toLocaleDateString("th-TH", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
 
             if (assignment.studentWork) {
               score = assignment.studentWork.score as number;
@@ -53,54 +135,58 @@ function ScoreStatus({ totalScore }: ScoreStatus) {
             }
             return (
               <li
-                onClick={() =>
-                  setActiveScore((prev) => {
-                    if (prev === index) {
-                      return null;
-                    } else {
-                      return index;
-                    }
-                  })
-                }
-                key={assignment.id}
-                className={`h-28 select-none w-full group cursor-pointer   p-2 text-center
-          ${
-            activeScore === index
-              ? "bg-green-700 text-white col-span-2 "
-              : "bg-green-500 text-black col-span-1 "
-          } rounded-lg ring-2 ring-white flex flex-col items-center
-           justify-center `}
+              key={assignment.id}
+              className="w-full no-underline hover:scale-110 transition duration-100 flex gap-5 items-center 
+              justify-center bg-white ring overflow-auto ring-[#2C7CD1] rounded-2xl p-3 "
               >
-                <div className="bg-green-200 w-7 h-7 rounded-full flex items-center justify-center">
-                  <MdOutlineAssignment />
-                </div>
-                {activeScore === index ? (
-                  <span className="text-base transition duration-150 font-medium  w-max   ">
-                    {assignment.assignment.title}
-                  </span>
-                ) : (
-                  <div className="flex justify-center items-center flex-col">
-                    <span className="text-xl font-semibold">
-                      {score.toFixed(2)}
-                    </span>
-                    <div className="w-10/12 h-[2px] bg-white"></div>
-                    <span className="text-xl font-semibold">
-                      {pureMaxScore}
-                    </span>
+              {/* Assignment Card*/}
+              <div className="flex justify-center items-center gap-3">
+                   {/* Left hand card */}
+                   <div className="w-full pl-2 h-28 flex flex-col justify-start  text-left ">
+                        {/* Left : Title */}
+                        <div className="pt-2 w-48 md:w-72 text-left truncate scrollbar-hide ">
+                            <span className="font-Kanit font-semibold text-xl text-[#2C7CD1]">
+                              {assignment.assignment?.title}
+                            </span>
+                        </div>
+                        {/* Left : Date Deadline */}
+                        <div className="flex flex-row text-[#F55E00] font-Kanit text-[0.6rem] gap-2">
+                            <span className=" ">
+                              วันที่: {formattedCreateDate}
+                            </span>
+                            <span className=" ">
+                              วันสิ้นสุด: {formatteDeadlineDate}
+                            </span>
+                        </div>
+                        {/* Left : Description */}
+                        <div className="pt-1 text-black font-Kanit text-sm mt-2 leading-4 w-[12.5rem] h-[3.125rem] md:w-[18.75rem] overflow-hidden"
+             dangerouslySetInnerHTML={{ __html: assignment.assignment?.description }}>
+                             
+                        </div>
+
+                   </div>
+
+                   {/* Right hand */}
+                   <div className="w-28 h-28 mr-2 flex items-center justify-center ">
+                      <div className="flex flex-col w-24 h-24 bg-[#00B451] rounded-2xl text-white font-Kanit  justify-center items-center">
+                        <span className="text-2xl font-semibold">
+                            {score.toFixed(2)}
+                        </span>
+                        <div className="w-10/12 h-[2px] bg-white"></div>
+                        <span className="text-base ">
+                            {pureMaxScore}
+                        </span>
+                      </div>
+                      
+                   </div>
+                    
                   </div>
-                )}
+
               </li>
             );
           })}
-          <li
-            className={`h-28 select-none w-full group   p-2 text-center
-          rounded-lg ring-2 bg-orange-400 font-semibold text-white ring-white flex flex-col items-center
-           justify-center `}
-          >
-            <span>{totalScore?.data?.speicalScore.toFixed(2)}</span>
-            <span>คะแนนพิเศษ</span>
-          </li>
-        </ul>
+          
+        </section>
       )}
     </section>
   );

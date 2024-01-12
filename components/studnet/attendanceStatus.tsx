@@ -3,56 +3,156 @@ import React from "react";
 import { ResponseGetAttendancesService } from "../../service/student/attendance";
 import { BiErrorCircle, BiHappyBeaming, BiRun } from "react-icons/bi";
 import { MdCardTravel, MdOutlineMoodBad, MdOutlineSick } from "react-icons/md";
+import {Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+import { Pie } from 'react-chartjs-2';
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 interface AttendanceStatus {
   attendances: UseQueryResult<ResponseGetAttendancesService, Error>;
 }
 function AttendanceStatus({ attendances }: AttendanceStatus) {
+  //!Bug : 
+  const data = {
+    labels: false,
+    datasets: [
+      {
+        label: false,
+        data: [
+          attendances?.data?.statistics?.number?.present || 0, 
+          attendances?.data?.statistics?.number?.holiday || 0,
+          attendances?.data?.statistics?.number?.sick || 0,
+          attendances?.data?.statistics?.number?.absent || 0,  
+          attendances?.data?.statistics?.number?.late || 0, 
+          ],
+        backgroundColor: [
+          //green yellow blue red orange
+          'rgba(0, 180, 81, 1)' ,
+          'rgba(237, 186, 2, 1)',
+          'rgba(44, 124, 209, 1)',
+          'rgba(237, 2, 2, 1)',
+          'rgba(245, 94, 0, 1)',
+        ],
+        
+      },
+    ],
+  };
+  const option2 = {
+    tooltips: {
+      enabled: false,
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          let sum = 0;
+          let dataArr = ctx.chart.data.datasets[0].data;
+  
+          dataArr.forEach(data => {
+            sum += data;
+          });
+  
+          
+          let percentage = value > 0 ? ((value * 100) / sum).toFixed() + "%" : "";
+  
+          return percentage;
+        },
+        color: '#fff',
+      },
+    },
+  };
+  
+  
+  
   return (
-    <section className="w-full h-full flex  justify-center">
-      <ul className="grid pl-0 grid-cols-1 gap-5 w-full h-full py-10 max-w-3xl md:w-10/12 rounded-t-3xl lg:rounded-3xl bg-white place-items-center">
+    <section className="w-full h-full flex  justify-center bg-white rounded-3xl">   
+      <ul className="grid pl-0 grid-cols-1 gap-1 w-full h-full py-5 max-w-3xl md:w-10/12  place-items-center">
         <div className="w-full flex justify-start flex-col items-center font-Kanit ">
-          <h2 className="mb-2">สถิติ</h2>
-          <div className="grid grid-cols-2 gap-4 w-max md:w-full md:place-items-center place-items-start">
-            <span className="col-span-2">
-              เปอเซ็นต์การเข้าเรียน{" "}
-              {attendances?.data?.statistics?.percent?.present?.toFixed(2)}%
-            </span>
-            <span>
-              จำนวนมาเรียน{" "}
-              <span className="font-semibold text-green-500">
-                {attendances?.data?.statistics?.number?.present} ครั้ง
-              </span>
-            </span>
-            <span>
-              จำนวนมาสาย{" "}
-              <span className="font-semibold text-orange-500">
-                {attendances?.data?.statistics?.number?.late} ครั้ง
-              </span>
-            </span>
-            <span>
-              จำนวนลา{" "}
-              <span className="font-semibold text-yellow-500">
-                {attendances?.data?.statistics?.number?.holiday} ครั้ง
-              </span>
-            </span>
-            <span>
-              จำนวนป่วย{" "}
-              <span className="font-semibold text-blue-500">
-                {attendances?.data?.statistics?.number?.sick} ครั้ง
-              </span>
-            </span>
-            <span>
-              จำนวนขาดเรียน{" "}
-              <span className="font-semibold text-red-500">
-                {attendances?.data?.statistics?.number?.absent} ครั้ง
-              </span>
-            </span>
+          <div className="flex">
+                {/* Chart */}
+              <div className="w-[150px] h-[150px]">
+              <Pie options={option2} data={data} />
+              </div>
 
-            <span className="col-span-2">
-              จำนวนคาบเรียนทั้งหมด {attendances?.data?.statistics?.sum} ครั้ง
-            </span>
+              {/* Info stats */}
+              <div className="-mt-5 ml-2 flex flex-col text-[#2C7CD1]">
+                  <h2 className="font-bold text-xl mt-2">ข้อมูลการมาเรียน</h2>
+                  <span className="text-sm"> 
+                    เปอเซ็นต์การเข้าเรียน 
+                    {attendances?.data?.statistics?.percent?.present?.toFixed(2)}%
+                  </span>
+                  <span className="text-sm"> 
+                    จำนวนคาบเรียน 
+                    {attendances?.data?.statistics?.sum  || 0} คาบ
+                  </span>
+
+                  <ul className="ml-3 mt-2 text-sm pr-6">
+                    <li className="flex gap-[0.4rem] justify-between">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[15px] h-[15px] rounded-full bg-[#00B451]"></div>
+                        <p>มาเรียน </p>
+                      </div>
+                      <span>
+                        {attendances?.data?.statistics?.number?.present  || 0}  
+                        <span className="ml-2">ครั้ง</span>
+                      </span>
+                    </li>
+                    <li className="flex gap-[0.4rem] justify-between">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[15px] h-[15px] rounded-full bg-[#EDBA02]"></div>
+                        <p>ลา </p>
+                      </div>
+                      <span>
+                      {attendances?.data?.statistics?.number?.holiday  || 0}  
+                      <span className="ml-2">ครั้ง</span>
+                      </span>
+                    </li>
+                    <li className="flex gap-[0.4rem] justify-between">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[15px] h-[15px] rounded-full bg-[#2C7CD1]"></div>
+                        <p>ป่วย </p>
+                      </div>
+                      <span>
+                      {attendances?.data?.statistics?.number?.sick  || 0}  
+                      <span className="ml-2">ครั้ง</span>
+                      </span>
+                    </li>
+                    <li className="flex gap-[0.4rem] justify-between">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[15px] h-[15px] rounded-full bg-[#ED0202]"></div>
+                        <p>ขาดเรียน </p>
+                      </div>
+                      <span>
+                      {attendances?.data?.statistics?.number?.absent  || 0}
+                      <span className="ml-2">ครั้ง</span>
+                      </span>
+                    </li>
+                    <li className="flex gap-[0.4rem] justify-between">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[15px] h-[15px] rounded-full bg-[#F55E00]"></div>
+                        <p>มาสาย </p>
+                      </div>
+                      <span>
+                      {attendances?.data?.statistics?.number?.late || 0}
+                      <span className="ml-2">ครั้ง</span>
+                      </span>
+                    </li>
+                    
+                  </ul>
+              </div>
           </div>
+
+        
+          
+        </div>
+
+        {/* Date statistic */}
+        <div className="flex  items-center justify-center font-Kanit w-full md:w-full rounded-md gap-1 mt-6">
+                <div className="flex justify-center items-center rounded-lg w-[220px] h-[30px] bg-[#2C7CD1] text-white ">
+                  <span className=" font-normal text-sm">วันที่</span>
+                </div>
+                <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-[#2C7CD1]  text-white">
+                  <span>สถานะ</span>
+                </div>
         </div>
 
         {attendances?.data?.students?.map((attendance) => {
@@ -69,17 +169,12 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
             return (
               <li
                 key={attendance.id}
-                className="flex  items-center justify-between font-Kanit w-full md:w-full rounded-md"
+                className="flex  items-center justify-center font-Kanit w-full md:w-full rounded-md gap-1"
               >
-                <div className="flex justify-start items-center ml-5 gap-2">
-                  <div className="w-10 h-10  rounded-full bg-green-100 flex items-center justify-center">
-                    <div className="flex items-center justify-center text-green-800 text-3xl">
-                      <BiHappyBeaming />
-                    </div>
-                  </div>
+                <div className="flex justify-center items-center rounded-lg w-[220px] h-[30px] bg-[#E8E8E8] text-[#2C7CD1]">
                   <span className=" font-normal text-sm">{formattedDate}</span>
                 </div>
-                <div className="w-max rounded-sm p-2 mr-5 bg-green-500 text-white">
+                <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-[#00B451]  text-white">
                   <span>มาเรียน</span>
                 </div>
               </li>
@@ -88,17 +183,12 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
             return (
               <li
                 key={attendance.id}
-                className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                className="flex  items-center justify-center font-Kanit w-full md:w-full rounded-md gap-1"
               >
-                <div className="flex justify-start items-center ml-5 gap-2">
-                  <div className="w-10 h-10  rounded-full bg-yellow-100 flex items-center justify-center">
-                    <div className="flex items-center justify-center text-yellow-400 text-3xl">
-                      <MdCardTravel />
-                    </div>
-                  </div>
+                <div className="flex justify-center items-center rounded-lg w-[220px] h-[30px] bg-[#E8E8E8] text-[#2C7CD1]">
                   <span className=" font-normal text-sm">{formattedDate}</span>
                 </div>
-                <div className="w-14 text-center rounded-sm p-2 mr-5 bg-yellow-500 text-white">
+                <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-[#EDBA02]  text-white">
                   <span>ลา</span>
                 </div>
               </li>
@@ -107,17 +197,12 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
             return (
               <li
                 key={attendance.id}
-                className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                className="flex  items-center justify-center font-Kanit w-full md:w-full rounded-md gap-1"
               >
-                <div className="flex justify-start items-center ml-5 gap-2">
-                  <div className="w-10 h-10  rounded-full bg-blue-100 flex items-center justify-center">
-                    <div className="flex items-center justify-center text-blue-400 text-3xl">
-                      <MdOutlineSick />
-                    </div>
-                  </div>
+                <div className="flex justify-center items-center rounded-lg w-[220px] h-[30px] bg-[#E8E8E8] text-[#2C7CD1]">
                   <span className=" font-normal text-sm">{formattedDate}</span>
                 </div>
-                <div className="w-14 text-center rounded-sm p-2 mr-5 bg-blue-500 text-white">
+                <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-blue-500  text-white">
                   <span>ป่วย</span>
                 </div>
               </li>
@@ -126,17 +211,13 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
             return (
               <li
                 key={attendance.id}
-                className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                className="flex  items-center justify-center font-Kanit w-full md:w-full rounded-md gap-1"
               >
-                <div className="flex justify-start items-center ml-5 gap-2">
-                  <div className="w-10 h-10  rounded-full bg-red-100 flex items-center justify-center">
-                    <div className="flex items-center justify-center text-red-400 text-3xl">
-                      <MdOutlineMoodBad />
-                    </div>
-                  </div>
+                <div className="flex justify-center items-center rounded-lg w-[220px] h-[30px] bg-[#E8E8E8] text-[#2C7CD1]">
+                  
                   <span className=" font-normal text-sm">{formattedDate}</span>
                 </div>
-                <div className="w-14 text-center rounded-sm p-2 mr-5 bg-red-500   text-white">
+                <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-[#ED0202]  text-white">
                   <span>ขาด</span>
                 </div>
               </li>
@@ -145,17 +226,13 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
             return (
               <li
                 key={attendance.id}
-                className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                className="flex  items-center justify-center font-Kanit w-full md:w-full rounded-md gap-1"
               >
-                <div className="flex justify-start items-center ml-5 gap-2">
-                  <div className="w-10 h-10  rounded-full bg-orange-100 flex items-center justify-center">
-                    <div className="flex items-center justify-center text-orange-400 text-3xl">
-                      <BiRun />
-                    </div>
-                  </div>
+                <div className="flex justify-center items-center rounded-lg w-[220px] h-[30px] bg-[#E8E8E8] text-[#2C7CD1]">
+                  
                   <span className=" font-normal text-sm">{formattedDate}</span>
                 </div>
-                <div className="w-14 text-center rounded-sm p-2 mr-5 bg-orange-500   text-white">
+                <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-[#F55E00]  text-white">
                   <span>สาย</span>
                 </div>
               </li>
@@ -164,17 +241,12 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
             return (
               <li
                 key={attendance.id}
-                className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                className="flex  items-center justify-center font-Kanit w-full md:w-full rounded-md gap-1"
               >
-                <div className="flex justify-start items-center ml-5 gap-2">
-                  <div className="w-10 h-10  rounded-full bg-gray-100 flex items-center justify-center">
-                    <div className="flex items-center justify-center text-gray-400 text-3xl">
-                      <BiErrorCircle />
-                    </div>
-                  </div>
+                <div className="flex justify-center items-center rounded-lg w-[220px] h-[30px] bg-[#E8E8E8] text-[#2C7CD1]">
                   <span className=" font-normal text-sm">{formattedDate}</span>
                 </div>
-                <div className="w-max text-center rounded-sm p-2 mr-5 text-sm bg-gray-500 text-white">
+                <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-gray-500  text-white">
                   <span>ไม่มีข้อมูล</span>
                 </div>
               </li>
