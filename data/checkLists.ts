@@ -1,27 +1,27 @@
 export const checkList = [
   {
-    titleThai: "เข้าเรียน",
+    titleThai: "มาเรียน",
     titleEnglish: "Present",
-    bgColor: "#008000",
+    bgColor: "#00B451",
   },
   {
     titleThai: "ลา",
     titleEnglish: "Take a leave",
-    bgColor: "#FFFF00",
+    bgColor: "#EDBA02",
   },
   {
     titleThai: "ป่วย",
     titleEnglish: "sick",
-    bgColor: "#0000FF",
+    bgColor: "#2C7CD1",
   },
   {
-    titleThai: "ขาด",
+    titleThai: "ขาดเรียน",
     titleEnglish: "Absent",
-    bgColor: "#FF0000",
+    bgColor: "#ED0202",
   },
   {
-    titleThai: "สาย",
+    titleThai: "มาสาย",
     titleEnglish: "late",
-    bgColor: "#FFA500",
+    bgColor: "#F55E00",
   },
 ];
