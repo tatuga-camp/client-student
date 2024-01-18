@@ -8,7 +8,6 @@ import {
   ReadQrCodeAttendanceService,
   UpdateQrCodeAttendanceService,
 } from "../../../service/student/attendance";
-import { Student } from "../../../models";
 import Swal from "sweetalert2";
 import { Skeleton } from "@mui/material";
 import { checkList } from "../../../data/checkLists";
@@ -74,7 +73,6 @@ function AttendanceQrCode() {
       }),
     enabled: false,
   });
-
   useEffect(() => {
     setExpireAt(() => qrCode.data?.qrCodeAttendance.exipreAt as string);
   }, [qrCode.data]);
