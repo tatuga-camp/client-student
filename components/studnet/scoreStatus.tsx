@@ -8,8 +8,6 @@ interface ScoreStatus {
   totalScore: UseQueryResult<ResponseStudentGetAllScoreService, Error>;
 }
 function ScoreStatus({ totalScore }: ScoreStatus) {
-  const [activeScore, setActiveScore] = useState<number | null>();
-
   const calculateAllAssignmentScore = (): string => {
     let total = 0;
 
