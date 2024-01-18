@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Script
         strategy="afterInteractive"
-        src="https://www.googletagmanager.com/gtag/js?id=G-C308M4051V"
+        src="https://www.googletagmanager.com/gtag/js?id=G-WZH3JD3STK"
       />
       <Script
         id="google-analytics"
@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
-gtag('config', 'G-C308M4051V');`}</Script>
+gtag('config', 'G-WZH3JD3STK');`}</Script>
       <NextTopLoader showSpinner={false} />
       <ReactQueryDevtools initialIsOpen={false} />
       <Component {...pageProps} />
