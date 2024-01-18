@@ -22,6 +22,7 @@ import Image from "next/image";
 import Head from "next/head";
 import { attendanceOptions } from "../../../data/attendanceOptions";
 import Success from "@/components/svg/success";
+import { FaCheckCircle } from "react-icons/fa";
 
 interface TimeLeft {
   days: number;
@@ -47,8 +48,8 @@ function AttendanceQrCode() {
   const [selected, setSelected] = useState<AttendanceWithStudent>(
     students?.[0]
   );
-  const [chooseStudent, setChooseStudent] = useState(false);
-  const [CheckAlready, setCheckAlready] = useState(false);
+  const [chooseStudent, setChooseStudent] = useState<boolean>(false);
+  const [CheckAlready, setCheckAlready] = useState<boolean>(false);
   const [expireAt, setExpireAt] = useState<string>();
   const [timeLeft, setTimeLeft] = useState<TimeLeft | "Expired">({
     days: 0,
@@ -57,7 +58,7 @@ function AttendanceQrCode() {
     seconds: 0,
   });
 
-  const [showStatus,setShowStatus] = useState(true);
+  const [showStatus,setShowStatus] = useState<boolean>(true);
   const [progress, setProgress] = useState(-1);
   const classroom = useQuery({
     queryKey: ["classroom"],
@@ -183,7 +184,7 @@ function AttendanceQrCode() {
         icon: "success",
       });
       setIsLoading(() => false);
-      setCheckAlready(true);
+      setCheckAlready(()=>true)
     } catch (err: any) {
       Swal.fire(
         "เกิดข้อผิดพลาด",
@@ -494,7 +495,7 @@ function AttendanceQrCode() {
         <div className="flex justify-center mb-[5rem] md:mb-[10rem]">
         {CheckAlready && 
             <div className="mt-3 flex flex-col items-center justify-center">
-              <Success/>
+              <FaCheckCircle  className="text-[#00B451] text-[8rem]"/>
               <span className="mt-5 font-semibold text-[#00B451]"> เช็คชื่อเรียบร้อย</span>
               <button
                    onClick={() => {
