@@ -20,6 +20,8 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import Image from "next/image";
 import Head from "next/head";
 import { attendanceOptions } from "../../../data/attendanceOptions";
+import Success from "@/components/svg/success";
+import { FaCheckCircle } from "react-icons/fa";
 
 interface TimeLeft {
   days: number;
@@ -45,7 +47,8 @@ function AttendanceQrCode() {
   const [selected, setSelected] = useState<AttendanceWithStudent>(
     students?.[0]
   );
-  const [chooseStudent, setChooseStudent] = useState(false);
+  const [chooseStudent, setChooseStudent] = useState<boolean>(false);
+  const [CheckAlready, setCheckAlready] = useState<boolean>(false);
   const [expireAt, setExpireAt] = useState<string>();
   const [timeLeft, setTimeLeft] = useState<TimeLeft | "Expired">({
     days: 0,
@@ -54,6 +57,7 @@ function AttendanceQrCode() {
     seconds: 0,
   });
 
+  const [showStatus,setShowStatus] = useState<boolean>(true);
   const [progress, setProgress] = useState(-1);
   const classroom = useQuery({
     queryKey: ["classroom"],
@@ -162,7 +166,7 @@ function AttendanceQrCode() {
             .replace(/\s+/g, "")
             .includes(query.toLowerCase().replace(/\s+/g, ""))
         );
-
+  
   const handleCheckAttendance = async () => {
     try {
       setIsLoading(() => true);
@@ -178,6 +182,7 @@ function AttendanceQrCode() {
         icon: "success",
       });
       setIsLoading(() => false);
+      setCheckAlready(()=>true)
     } catch (err: any) {
       Swal.fire(
         "เกิดข้อผิดพลาด",
@@ -200,12 +205,15 @@ function AttendanceQrCode() {
           alt="cover image"
           className="object-cover -z-10"
         />
-        <div className="w-60 flex flex-col p-3 items-center  h-max bg-white rounded-md">
-          <h1 className="text-lg font-semibold border-b-2 border-black ">
-            เช็คชื่อด้วย Qr code
+        {/* Head card */}
+        <div className="w-60 flex flex-col p-3 items-center  h-max bg-white rounded-[2.5rem] border-solid border-2 border-[#2C7CD1]">
+          <h1 className="text-lg font-bold  border-black ">
+            ห้องเรียน
           </h1>
 
-          <h2 className="text-lg font-semibold text-center text-blue-700 truncate w-52">
+          <h3 className="text-[#F55E00] text-4xl font-semibold">{classroom.data?.classroomCode}</h3>
+
+          <h2 className="text-lg font-semibold text-center text-[#2C7CD1] truncate w-52">
             {classroom.isLoading ? (
               <Skeleton variant="text" />
             ) : (
@@ -213,9 +221,9 @@ function AttendanceQrCode() {
             )}
           </h2>
           <h3
-            className="text-sm font-normal text-center  px-2  rounded-lg text-black 
+            className="text-sm font-normal text-center  px-2  rounded-lg text-[#EDBA02]
        truncate w-fit max-w-[13rem]"
-          >
+          > M.
             {classroom.isLoading ? (
               <Skeleton variant="text" width={100} />
             ) : (
@@ -227,9 +235,10 @@ function AttendanceQrCode() {
               <Skeleton variant="text" />
             ) : (
               classroom?.data?.description
+            
             )}
           </h4>
-          <h4
+          {/* <h4
             className={`text-base font-normal text-center ${
               qrCode.isError ? "bg-red-600" : "bg-blue-500"
             }  rounded-md 
@@ -242,61 +251,120 @@ function AttendanceQrCode() {
             ) : (
               `วันที่ ${formattedDate}`
             )}
-          </h4>
+          </h4> */}
         </div>
       </header>
       <main className="mt-4">
-        <span className="text-xl font-semibold text-blue-700">
+        {/* Content : remaing time */}
+        <div className="flex flex-col justify-center items-center">
+          <span className="mt-2 mb-5 text-[#2C7CD1] text-2xl font-semibold">เช็คชื่อด้วย QR Code</span>
+          <h2 className="text-base bg-red-500 text-white py-1 px-2 rounded-[1.25rem] ">เหลือเวลาอีก</h2>
+          <ul className="mt-4 flex justify-start items-center gap-2 text-red-500 font-semibold">
+            <li>
+              <span className="">
+                {timeLeft !== "Expired" && timeLeft.days}
+              </span>{" "}
+              วัน :
+            </li>
+            <li>
+              <span className="">
+                {timeLeft !== "Expired" && timeLeft.hours}
+              </span>{" "}
+              ชั่วโมง :
+            </li>
+            <li>
+              <span className="">
+                {timeLeft !== "Expired" && timeLeft.minutes}
+              </span>{" "}
+              นาที :
+            </li>
+            <li>
+              <span className="">
+                {timeLeft !== "Expired" && timeLeft.seconds}
+              </span>{" "}
+              วินาที 
+            </li>
+          </ul>
+          <span className="mt-3  text-base font-semibold  text-black">
           {chooseStudent
-            ? `${selected.student.firstName} ${selected?.student.lastName}`
+            ? <div className="flex items-center justify-center text-center text-[#2C7CD1] text-3xl my-5">{selected.student.firstName} {selected?.student.lastName} </div> 
             : qrCode.isError
             ? "หมดเวลาการเช็คชื่อ"
-            : `โปรดเลือกชื่อของตัวเอง`}
+            : `โปรดเลือกรายชื่อ`}
         </span>
+        </div>
+
+        <div className="flex items-center justify-center">
         {qrCode.isLoading ? (
           <Skeleton variant="rectangular" height={40} />
         ) : chooseStudent ? (
-          <section className="w-80">
-            <h1>เลขที่ {selected.student.number}</h1>
-            <div className="grid items-center w-10/12 md:w-full h-max grid-cols-3 place-items-center my-2">
-              {checkList.map((attendance, index) => {
-                return (
-                  <div
-                    onClick={() => {
-                      setReCheck(() => attendanceOptions[index]);
-                      setActiveAttendance(index);
-                    }}
-                    key={index}
-                    style={{ backgroundColor: attendance.bgColor }}
-                    className={`
-             
-              w-max min-w-[5rem] h-8 text-center flex items-center justify-center text-black rounded-lg cursor-pointer 
-              border-2 border-solid hover:scale-105 transition duration-150 ${
-                activeAttendance === index ? "border-black" : "border-white"
-              }
-              
-              `}
-                  >
-                    {attendance.titleThai}
+            // {/* Status */}
+            // {/* {chooseStudent ? showStatus : showCombobox} */}
+              showStatus && (
+                <section className="flex flex-col justify-center items-center w-80 ">          
+                <div className="grid items-center justify-center md:w-9/12  w-8/12 h-max grid-cols-2 gap-y-2 place-items-center my-2">
+                  {checkList.map((attendance, index) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          setReCheck(() => attendanceOptions[index]);
+                          setActiveAttendance(index);
+                        }}
+                        key={index}
+                        className={`
+                 
+                  w-max min-w-[6rem] h-10 text-center flex items-center rounded-full justify-center cursor-pointer 
+                  border-2 border-solid hover:scale-105 transition duration-150 text-xl
+                  ${
+                    activeAttendance === index ? ` text-white bg-[${attendance.bgColor}]` : `text-[${attendance.bgColor}] border-[${attendance.bgColor}] bg-white`
+                  }
+                  
+                  `}
+                      >
+                        {attendance.titleThai}
+                      </div>
+                    );
+                  })}
+                </div>
+    
+                {/* After select status -> checked */}
+                {isLoading ? (
+                  <Loading />
+                ) : (
+                  <div className="flex gap-2 ">
+                      <button
+                      onClick={() => setChooseStudent(() => false)}
+                      className="px-4 py-1 mt-5 hover:bg-blue-800 active:scale-110 transition duration-150 bg-[#8d8d8d] rounded-full
+                      text-white flex justify-center items-center gap-2 text-xl"
+                      >
+                      <MdOutlineArrowBackIos />
+                      กลับ
+                    </button> 
+                    <button
+                        onClick={() => {
+                          handleCheckAttendance(); 
+                          setShowStatus(() => false);
+                        }}
+                        className="px-4 py-1 mt-5 hover:bg-blue-800 active:scale-110 transition duration-150 bg-[#2C7CD1] rounded-full
+                        text-white flex justify-center items-center gap-2 text-xl"
+                      >
+                        เช็คชื่อ 
+                      </button>
+                     
                   </div>
-                );
-              })}
-            </div>
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <button
-                onClick={handleCheckAttendance}
-                className="px-4 py-1 mt-5 hover:bg-green-800 active:scale-110 transition duration-150 bg-green-600 rounded-full
-     text-green-200 flex justify-center items-center gap-2 ring-2 ring-green-400 drop-shadow-md"
-              >
-                เช็คชื่อ <AiFillCheckCircle />
-              </button>
-            )}
-          </section>
-        ) : qrCode.isError ? (
+                  
+                )}
+              </section>
+              )
+         
+        )
+        
+        
+        
+        : qrCode.isError ? (
           <h2>Time is up please contact your teacher</h2>
         ) : (
+          <div className="flex flex-col justify-center items-center">
           <Combobox
             value={selected}
             onChange={(student: AttendanceWithStudent) => {
@@ -306,21 +374,22 @@ function AttendanceQrCode() {
           >
             <div className="relative ">
               <div
-                className="relative w-80 cursor-default overflow-hidden rounded-lg ring-2 ring-blue-500
+                className="mt-4 relative w-80 cursor-default overflow-hidden py-1 rounded-full ring-2 ring-blue-500
                 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white
                  focus-visible:ring-opacity-75 focus-visible:ring-offset-2
                   focus-visible:ring-offset-teal-300 sm:text-sm"
               >
                 <Combobox.Input
                   autoComplete="off"
-                  className="w-full border-none  py-2 pl-3 pr-10 text-sm leading-5 
-                   text-gray-900 focus:ring-0 focus:border-none outline-none
+                  className="w-full font-semibold border-none text-xl px-5  py-1  pr-10  leading-5 
+                   text-[#2C7CD1] focus:ring-0 focus:border-none outline-none
                   active:border-none"
                   displayValue={(studnet: AttendanceWithStudent) =>
                     `${studnet.student.firstName}  ${studnet.student.lastName}`
                   }
                   onChange={(event) => setQuery(event.target.value)}
                 />
+
                 <Combobox.Button
                   role="button"
                   className="absolute inset-y-0 right-0 flex items-center pr-2 bg-transparent border-none"
@@ -330,7 +399,9 @@ function AttendanceQrCode() {
                     aria-hidden="true"
                   />
                 </Combobox.Button>
+
               </div>
+              
               <Transition
                 as={Fragment}
                 leave="transition ease-in duration-100"
@@ -344,7 +415,7 @@ function AttendanceQrCode() {
             ring-opacity-5 focus:outline-none sm:text-sm"
                 >
                   {filteredStudents?.length === 0 && query !== "" ? (
-                    <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                    <div className="relative cursor-default select-none py-2 px-3 text-gray-700">
                       Nothing found.
                     </div>
                   ) : (
@@ -352,10 +423,10 @@ function AttendanceQrCode() {
                       <Combobox.Option
                         key={student.id}
                         className={({ active }) =>
-                          `relative cursor-pointer w-full select-none z-40 py-2 pl-10 pr-4 ${
+                          `relative cursor-pointer w-full select-none text-[0.8rem] z-40 py-2 pl-10 pr-4 ${
                             active
                               ? "bg-[#EDBA02] text-white"
-                              : "text-gray-900 bg-white"
+                              : "text-[#2C7CD1] bg-white"
                           }`
                         }
                         value={student}
@@ -363,19 +434,20 @@ function AttendanceQrCode() {
                         {({ selected, active }) => (
                           <>
                             <div
-                              className={` w-full flex border-b-[1px] border-black py-1 justify-between ${
+                              className={` w-full flex items-center py-1 border-b-[1px] border-black  justify-between  ${
                                 selected ? "font-medium" : "font-normal"
                               }`}
                             >
                               <div>
-                                {student.student.firstName}{" "}
+                                {student.student.firstName}{" "} 
                                 {student.student.lastName}{" "}
                               </div>
                               {student.isCheck === true && (
-                                <div className="bg-green-400 rounded-lg p-1">
+                                <div className="bg-green-400 rounded-lg px-1 text-black text-[0.6rem]">
                                   เช็คชื่อแล้ว
                                 </div>
                               )}
+                              
                             </div>
                             {selected ? (
                               <span
@@ -398,71 +470,46 @@ function AttendanceQrCode() {
               </Transition>
             </div>
           </Combobox>
+          <button
+               onClick={() => {
+                setChooseStudent(() => true);
+                setShowStatus(() => true); // Add this line
+              }}
+              className="px-4 py-1 mt-8 hover:bg-blue-800 active:scale-110 transition duration-150 bg-[#2C7CD1] rounded-full
+              text-white flex justify-center items-center gap-2 text-xl"
+            >
+              เลือก
+            
+            </button>
+          </div>
+          
         )}
+        </div>
+        
+        
+       
       </main>
       <footer>
-        <ul className="list-none flex justify-center gap-2 items-center pl-0 w-80 mt-10">
-          {progressMenus.map((list, index) => {
-            return (
-              <li key={index}>
-                <span>{list.title}</span>
-                <div
-                  className={`w-40 h-[2px]  ${
-                    progress >= index ? "bg-green-600" : "bg-gray-400"
-                  }`}
-                ></div>
-              </li>
-            );
-          })}
-        </ul>
-        {selected &&
-          (chooseStudent ? (
-            <button
-              onClick={() => setChooseStudent(() => false)}
-              className="px-4 py-1 mt-5 hover:bg-blue-800 active:scale-110 transition duration-150 bg-blue-600 rounded-full
-     text-blue-200 flex justify-center items-center gap-2 ring-2 ring-blue-400 drop-shadow-md"
-            >
-              <MdOutlineArrowBackIos />
-              กลับ
-            </button>
-          ) : (
-            <button
-              onClick={() => setChooseStudent(() => true)}
-              className="px-4 py-1 mt-5 hover:bg-green-800 active:scale-110 transition duration-150 bg-green-600 rounded-full
-     text-green-200 flex justify-center items-center gap-2 ring-2 ring-green-400 drop-shadow-md"
-            >
-              เลือกชื่อ
-              <AiFillCheckCircle />
-            </button>
-          ))}
-        <div className="mt-5">
-          <h2 className="font-bold text-lg text-red-500">เหลือเวลาอีก</h2>
-          <ul className="flex justify-start items-center gap-2">
-            <li>
-              <span className="font-bold">
-                {timeLeft !== "Expired" && timeLeft.days}
-              </span>{" "}
-              วัน
-            </li>
-            <li>
-              <span className="font-bold">
-                {timeLeft !== "Expired" && timeLeft.hours}
-              </span>{" "}
-              ชั่วโมง
-            </li>
-            <li>
-              <span className="font-bold">
-                {timeLeft !== "Expired" && timeLeft.minutes}
-              </span>{" "}
-              นาที
-            </li>
-            <li>
-              <span className="font-bold">
-                {timeLeft !== "Expired" && timeLeft.seconds}
-              </span>{" "}
-              วินาที
-            </li>
-          </ul>
+        <div className="flex justify-center mb-[5rem] md:mb-[10rem]">
+        {CheckAlready && 
+            <div className="mt-3 flex flex-col items-center justify-center">
+              <FaCheckCircle  className="text-[#00B451] text-[8rem]"/>
+              <span className="mt-5 font-semibold text-[#00B451]"> เช็คชื่อเรียบร้อย</span>
+              <button
+                   onClick={() => {
+                    setCheckAlready(() => false);
+                    setChooseStudent(() => false);
+                    
+                  }}
+                  className="px-4 py-1 mt-5 hover:bg-blue-800 active:scale-110 transition duration-150 bg-[#2C7CD1] rounded-full
+                  text-white flex justify-center items-center gap-2 text-xl"
+                  >
+                  <MdOutlineArrowBackIos />
+                  กลับ
+                </button> 
+             
+            </div>
+          }
         </div>
       </footer>
     </div>
