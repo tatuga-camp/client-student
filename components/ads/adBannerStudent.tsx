@@ -17,8 +17,8 @@ const AdBannerStudent = ({
 
   useEffect(() => {
     try {
-      // ((window as ExtendedWindow).adsbygoogle =
-      //   (window as ExtendedWindow).adsbygoogle || []).push({});
+      ((window as ExtendedWindow).adsbygoogle =
+        (window as ExtendedWindow).adsbygoogle || []).push({});
     } catch (err) {
       console.error(err);
     }
