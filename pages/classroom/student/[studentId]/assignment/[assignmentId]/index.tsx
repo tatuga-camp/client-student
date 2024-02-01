@@ -7,7 +7,7 @@ import {
   GetMyWorkService,
 } from "../../../../../../service/student/assignment";
 import { GetStudentService } from "../../../../../../service/student/student";
-import { initLightboxJS } from "lightbox.js-react";
+import { SlideshowLightbox, initLightboxJS } from "lightbox.js-react";
 import { File, StudentWork, User } from "../../../../../../models";
 import Head from "next/head";
 import ShowSelectFile from "../../../../../../components/forms/showSelectFile";
@@ -40,7 +40,6 @@ function Index() {
   const [deadline, setDeadline] = useState<string>();
   const [isDue, setIsDue] = useState(false);
   const currentTime = new Date();
-
   const [triggerShowFile, setTriggerShowFile] = useState(false);
   const [selectFile, setSelectFile] = useState<File>();
   const classroom = useQuery({
