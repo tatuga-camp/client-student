@@ -232,7 +232,7 @@ bg-[url('https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud
           </div>
         </section>
         <section
-          className="w-11/12 relative max-w-2xl mt-10 grid gap-2 p-4 rounded-lg ring-2 ring-blue-500 
+          className="w-full relative max-w-2xl mt-10 grid gap-2 p-2 ring-2 ring-blue-500 
       bg-white  "
         >
           <div className="absolute w-full  flex flex-col -top-6 items-center justify-center">
@@ -369,7 +369,7 @@ bg-[url('https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud
               loadingTiny
                 ? "w-0 h-0 opacity-0"
                 : "h-96 max-h-96  w-full opacity-100 "
-            }  lg:text-lg rounded-md max-w-4xl overflow-auto`}
+            }  lg:text-lg rounded-md max-w-2xl overflow-auto`}
           >
             <Editor
               disabled={true}

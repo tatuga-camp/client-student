@@ -23,8 +23,8 @@ function ShowFilesListsOnAssignment({
 
   return (
     <div className="w-full border-t-2 boder-black my-4">
-      <div className="text-xl flex items-center gap-2">
-        <span>ไฟล์แนบ</span>
+      <div className="text-xl mt-2 flex items-center gap-2">
+        <span className="font-bold">ไฟล์แนบ</span>
         <BsFileEarmark />
       </div>
       <ul className="w-full h-max max-h-[20rem] grid p-5 gap-5 overflow-auto ">
