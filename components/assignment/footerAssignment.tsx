@@ -309,8 +309,7 @@ function FooterAssignment({
       flex flex-col gap-2 items-center justify-top"
             >
               <span className="text-sm text-red-500 w-8/12 text-center">
-                สามารส่งไฟล์ mp4, mp3, docx, pdf,jpge, png ได้แล้ว ขนาดไม่เกิน
-                400 MB
+                สามารส่งไฟล์ ขนาดไม่เกิน 400 MB
               </span>
               <div className="flex justify-center gap-5 w-full">
                 {fetchStudentWork.isLoading ? (
