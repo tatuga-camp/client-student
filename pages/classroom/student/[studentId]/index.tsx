@@ -42,86 +42,93 @@ function Index() {
   const [menus, setMenus] = useState<Menu[]>();
 
   const totalScore = useQuery({
-    queryKey: ["student-totalScore"],
+    queryKey: [
+      "student-totalScore",
+      {
+        studentId: router.query.studentId as string,
+        classroomId: router.query.classroomId as string,
+      },
+    ],
     queryFn: () =>
       StudentGetAllScoreService({
         studentId: router.query.studentId as string,
         classroomId: router.query.classroomId as string,
       }),
-    enabled: false,
   });
   const classroom = useQuery({
-    queryKey: ["classroom"],
+    queryKey: ["classroom", router?.query?.classroomId as string],
     queryFn: () =>
       StudentGetClassroomService({
         classroomId: router?.query?.classroomId as string,
+      }).then((res) => {
+        setMenus(() => {
+          if (res?.allowStudentsToViewScores) {
+            return [
+              {
+                title: "ชิ้นงาน",
+                icon: <MdWork />,
+                color: "#EDBA02",
+              },
+              {
+                title: "มาเรียน",
+                icon: <HiOutlineHandRaised />,
+                color: "#00B451",
+              },
+              {
+                title: "คะแนนรวม",
+                icon: <GrScorecard />,
+                color: "#9C2CD1",
+              },
+            ];
+          } else {
+            return [
+              {
+                title: "ชิ้นงาน",
+                icon: <MdWork />,
+                color: "#EDBA02",
+              },
+              {
+                title: "มาเรียน",
+                icon: <HiOutlineHandRaised />,
+                color: "#00B451",
+              },
+            ];
+          }
+        });
+        return res;
       }),
-    enabled: false,
   });
 
   const student = useQuery({
-    queryKey: ["student"],
+    queryKey: ["student", router.query.studentId as string],
     queryFn: () =>
       GetStudentService({ studentId: router.query.studentId as string }),
-    enabled: false,
   });
 
   const assignments = useQuery({
-    queryKey: ["assignments-student"],
+    queryKey: [
+      "assignments-student",
+      {
+        studentId: router.query.studentId as string,
+        classroomId: router.query.classroomId as string,
+      },
+    ],
     queryFn: () =>
       GetAllAssignmentService({
         studentId: router.query.studentId as string,
         classroomId: router.query.classroomId as string,
       }),
-    enabled: false,
+    staleTime: 1000 * 10,
+    refetchInterval: 1000 * 10,
   });
   const attendances = useQuery({
-    queryKey: ["attendances"],
+    queryKey: ["attendances", router.query.classroomId as string],
     queryFn: () =>
       GetAttendancesService({
         studentId: router.query.studentId as string,
         classroomId: router.query.classroomId as string,
       }),
-    enabled: false,
   });
-
-  useEffect(() => {
-    setMenus(() => {
-      if (classroom?.data?.allowStudentsToViewScores) {
-        totalScore.refetch();
-        return [
-          {
-            title: "ชิ้นงาน",
-            icon: <MdWork />,
-            color: "#EDBA02",
-          },
-          {
-            title: "มาเรียน",
-            icon: <HiOutlineHandRaised />,
-            color: "#00B451",
-          },
-          {
-            title: "คะแนนรวม",
-            icon: <GrScorecard />,
-            color: "#9C2CD1",
-          },
-        ];
-      } else {
-        return [
-          {
-            title: "ชิ้นงาน",
-            icon: <MdWork />,
-            color: "#EDBA02",
-          },
-          {
-            title: "มาเรียน",
-            icon: <HiOutlineHandRaised />,
-            color: "#00B451",
-          },
-        ];
-      }
-    });
-  }, [classroom.isSuccess]);
 
   useEffect(() => {
     setClassroomCode(() => {
@@ -129,13 +136,7 @@ function Index() {
       const classroomCode = JSON.parse(rawClassroomCode as string);
       return classroomCode;
     });
-    if (router.isReady) {
-      student.refetch();
-      assignments.refetch();
-      attendances.refetch();
-      classroom.refetch();
-    }
-  }, [router.isReady]);
+  }, []);
 
   //handle sumit to update student data
   const handleSummitEditStudentData = async (e: React.FormEvent) => {

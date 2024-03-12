@@ -64,13 +64,20 @@ function FooterAssignment({
   const [fileSize, setFilesSize] = useState<number>(0);
 
   const comments = useQuery({
-    queryKey: ["comments"],
+    queryKey: [
+      "comments",
+      {
+        assignmentId: assignment.data?.id as string,
+        studentId: router?.query?.studentId as string,
+      },
+    ],
     queryFn: () =>
       GetCommentsService({
         assignmentId: assignment.data?.id as string,
         studentId: router?.query?.studentId as string,
       }),
-    enabled: false,
+    staleTime: 1000 * 6,
+    refetchInterval: 1000 * 6,
   });
 
   const handleOpenTrigerMenu = () => {
