@@ -132,7 +132,7 @@ function ScoreStatus({ totalScore }: ScoreStatus) {
             return (
               <li
                 key={assignment.id}
-                className="w-full no-underline hover:scale-110 transition duration-100 flex gap-5 items-center 
+                className="w-11/12 no-underline hover:scale-110 transition duration-100 flex gap-5 items-center 
               justify-center bg-white ring overflow-auto ring-[#2C7CD1] rounded-2xl p-3 "
               >
                 {/* Assignment Card*/}

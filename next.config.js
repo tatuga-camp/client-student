@@ -27,12 +27,16 @@ const nextConfig = {
     //largePageDataBytes: 128 * 1000, // 128KB by default
     largePageDataBytes: 200 * 1000,
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "source.unsplash.com",
+        hostname: "cdn.sanity.io",
+      },
+      {
+        protocol: "https",
+        hostname: "n14jpqkv.api.sanity.io",
       },
       {
         protocol: "https",
@@ -40,7 +44,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "cdn.sanity.io",
+        hostname: "lh3.googleusercontent.com",
       },
     ],
   },

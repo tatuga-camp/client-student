@@ -24,7 +24,7 @@
     "file-loader": "^6.2.0",
     "heic2any": "^0.0.4",
     "lightbox.js-react": "^0.9.8",
-    "next": "14.0.4",
+    "next": "13.4.19",
     "nextjs-toploader": "^1.6.4",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
