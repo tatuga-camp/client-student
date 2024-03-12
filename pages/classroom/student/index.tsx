@@ -25,8 +25,9 @@ function Index() {
   const [loading, setLoading] = useState(false);
   const [triggerNewPassword, setTriggerNewPassword] = useState(false);
   const [triggerEnterPassword, setTriggerEnterPassword] = useState(false);
+
   const classroom = useQuery({
-    queryKey: ["classroom-student"],
+    queryKey: ["classroom-student", rounter.query.classroomCode as string],
     queryFn: () =>
       JoinClassroomService({
         classroomCode: rounter.query.classroomCode as string,
@@ -34,7 +35,6 @@ function Index() {
         localStorage.setItem("teacher", JSON.stringify(res.teacher));
         return res;
       }),
-    enabled: false,
   });
 
   //set swal aleart when get query of redirect success

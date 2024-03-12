@@ -44,37 +44,41 @@ function Index() {
   const [triggerShowFile, setTriggerShowFile] = useState(false);
   const [selectFile, setSelectFile] = useState<File>();
   const classroom = useQuery({
-    queryKey: ["classroom"],
+    queryKey: ["classroom", router.query.classroomId as string],
     queryFn: () =>
       StudentGetClassroomService({
         classroomId: router?.query?.classroomId as string,
       }),
-    enabled: false,
   });
   const assignment = useQuery({
-    queryKey: ["assignment"],
+    queryKey: ["assignment", router.query.assignmentId as string],
     queryFn: () =>
       GetAssignmentService({
         assignmentId: router.query.assignmentId as string,
       }),
-    enabled: false,
   });
 
   const student = useQuery({
-    queryKey: ["student"],
+    queryKey: ["student", router.query.studentId as string],
     queryFn: () =>
       GetStudentService({ studentId: router.query.studentId as string }),
-    enabled: false,
   });
 
   const fetchStudentWork = useQuery({
-    queryKey: ["student-work"],
+    queryKey: [
+      "student-work",
+      {
+        studentId: router.query.studentId as string,
+        assignmentId: router.query.assignmentId as string,
+      },
+    ],
     queryFn: () =>
       GetMyWorkService({
         studentId: router.query.studentId as string,
         assignmentId: router.query.assignmentId as string,
       }),
-    enabled: false,
+    staleTime: 1000 * 6,
+    refetchInterval: 1000 * 6,
   });
 
   useEffect(() => {
@@ -136,15 +140,6 @@ function Index() {
       }
     });
   }, [fetchStudentWork.data]);
-
-  useEffect(() => {
-    if (router.isReady) {
-      classroom.refetch();
-      student.refetch();
-      fetchStudentWork.refetch();
-      assignment.refetch();
-    }
-  }, [router.isReady]);
 
   useEffect(() => {
     setTeacher(() => {
