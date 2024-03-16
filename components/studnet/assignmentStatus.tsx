@@ -11,7 +11,7 @@ interface AssignmentStatus {
 }
 function AssignmentStatus({ assignments, student }: AssignmentStatus) {
   const router = useRouter();
-  
+
   return (
     <section className="flex flex-col items-center justify-center gap-5 mb-5">
       {assignments?.data?.map((assignment) => {
@@ -24,9 +24,6 @@ function AssignmentStatus({ assignments, student }: AssignmentStatus) {
         let IsDue = false;
         const currentTime = new Date();
         let deadlineDate = new Date(assignment.assignment?.deadline);
-        deadlineDate.setHours(23);
-        deadlineDate.setMinutes(59);
-        deadlineDate.setSeconds(0);
         if (currentTime > deadlineDate) {
           IsDue = true;
         } else if (currentTime < deadlineDate) {
@@ -36,6 +33,8 @@ function AssignmentStatus({ assignments, student }: AssignmentStatus) {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
         });
         return (
           <Link
@@ -52,18 +51,16 @@ function AssignmentStatus({ assignments, student }: AssignmentStatus) {
                 </span>
               </div>
               <div className="flex flex-row text-[#F55E00] font-Kanit text-[0.6rem] gap-2">
-                <span className=" ">
-                  วันที่: {formattedCreateDate}
-                </span>
-                <span className=" ">
-                  วันสิ้นสุด: {formatteDeadlineDate}
-                </span>
+                <span className=" ">วันที่: {formattedCreateDate}</span>
+                <span className=" ">วันสิ้นสุด: {formatteDeadlineDate}</span>
               </div>
               {/* Assignment description */}
-              <div className="pt-1 text-black font-Kanit text-sm mt-2 leading-4 w-[12.5rem] h-[3.125rem] md:w-[18.75rem] overflow-hidden"
-             dangerouslySetInnerHTML={{ __html: assignment.assignment?.description }}>
-                    
-              </div>
+              <div
+                className="pt-1 text-black font-Kanit text-sm mt-2 leading-4 w-[12.5rem] h-[3.125rem] md:w-[18.75rem] overflow-hidden"
+                dangerouslySetInnerHTML={{
+                  __html: assignment.assignment?.description,
+                }}
+              ></div>
             </div>
             {/* Right hand */}
             <div className="w-20 h-28 mr-3 flex items-center justify-center ">
@@ -96,7 +93,6 @@ function AssignmentStatus({ assignments, student }: AssignmentStatus) {
                       <span>ตรวจแล้ว</span>
                     </div>
                   )}
-                
               </div>
             </div>
           </Link>

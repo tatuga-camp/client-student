@@ -82,9 +82,6 @@ function Index() {
 
   useEffect(() => {
     let deadlineSet = new Date(assignment?.data?.deadline as string);
-    deadlineSet.setHours(23);
-    deadlineSet.setMinutes(59);
-    deadlineSet.setSeconds(0);
     if (currentTime > deadlineSet) {
       setIsDue(() => true);
     } else if (currentTime < deadlineSet) {
@@ -97,6 +94,8 @@ function Index() {
         day: "2-digit",
         month: "short",
         year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
       });
       return formattedDate;
     });
