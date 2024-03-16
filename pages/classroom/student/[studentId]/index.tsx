@@ -60,44 +60,47 @@ function Index() {
     queryFn: () =>
       StudentGetClassroomService({
         classroomId: router?.query?.classroomId as string,
-      }).then((res) => {
-        setMenus(() => {
-          if (res?.allowStudentsToViewScores) {
-            return [
-              {
-                title: "ชิ้นงาน",
-                icon: <MdWork />,
-                color: "#EDBA02",
-              },
-              {
-                title: "มาเรียน",
-                icon: <HiOutlineHandRaised />,
-                color: "#00B451",
-              },
-              {
-                title: "คะแนนรวม",
-                icon: <GrScorecard />,
-                color: "#9C2CD1",
-              },
-            ];
-          } else {
-            return [
-              {
-                title: "ชิ้นงาน",
-                icon: <MdWork />,
-                color: "#EDBA02",
-              },
-              {
-                title: "มาเรียน",
-                icon: <HiOutlineHandRaised />,
-                color: "#00B451",
-              },
-            ];
-          }
-        });
-        return res;
       }),
   });
+
+  useEffect(() => {
+    if (classroom.data) {
+      setMenus(() => {
+        if (classroom.data.allowStudentsToViewScores) {
+          return [
+            {
+              title: "ชิ้นงาน",
+              icon: <MdWork />,
+              color: "#EDBA02",
+            },
+            {
+              title: "มาเรียน",
+              icon: <HiOutlineHandRaised />,
+              color: "#00B451",
+            },
+            {
+              title: "คะแนนรวม",
+              icon: <GrScorecard />,
+              color: "#9C2CD1",
+            },
+          ];
+        } else {
+          return [
+            {
+              title: "ชิ้นงาน",
+              icon: <MdWork />,
+              color: "#EDBA02",
+            },
+            {
+              title: "มาเรียน",
+              icon: <HiOutlineHandRaised />,
+              color: "#00B451",
+            },
+          ];
+        }
+      });
+    }
+  }, [classroom.isSuccess]);
 
   const student = useQuery({
     queryKey: ["student", router.query.studentId as string],
