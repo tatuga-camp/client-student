@@ -125,7 +125,13 @@ function Index() {
     refetchInterval: 1000 * 10,
   });
   const attendances = useQuery({
-    queryKey: ["attendances", router.query.classroomId as string],
+    queryKey: [
+      "attendances",
+      {
+        studentId: router.query.studentId as string,
+        classroomId: router.query.classroomId as string,
+      },
+    ],
     queryFn: () =>
       GetAttendancesService({
         studentId: router.query.studentId as string,
