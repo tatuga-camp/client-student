@@ -205,11 +205,11 @@ function Index() {
           : "h-screen"
       }  md:h-full md:pb-40 lg:pb-96 lg:h-full`}
     >
-      <AdBannerStudent
+      {/* <AdBannerStudent
         data_ad_slot="1866874180"
         data_ad_format="auto"
         data_full_width_responsive="true"
-      />
+      /> */}
       <Head>
         <title>student - homepage</title>
         <meta

@@ -117,11 +117,11 @@ function Index() {
 
   return (
     <div className=" h-full bg-slate-100 relative ">
-      <AdBannerStudent
+      {/* <AdBannerStudent
         data_ad_slot="6918158379"
         data_ad_format="auto"
         data_full_width_responsive="true"
-      />
+      /> */}
       <Head>
         <title>{`${
           classroom.isError
