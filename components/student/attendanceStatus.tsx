@@ -70,7 +70,7 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
             <div className="-mt-5 ml-2 flex flex-col text-[#2C7CD1]">
               <h2 className="font-bold text-xl mt-2">ข้อมูลการมาเรียน</h2>
               <span className="text-sm">
-                เปอเซ็นต์การเข้าเรียน
+                เปอเซ็นต์การเข้าเรียน {` `}
                 {attendances?.data?.statistics?.percent?.present?.toFixed(2)}%
               </span>
               <span className="text-sm">
@@ -221,20 +221,6 @@ function AttendanceStatus({ attendances }: AttendanceStatus) {
                 </div>
                 <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-[#F55E00]  text-white">
                   <span>สาย</span>
-                </div>
-              </li>
-            );
-          } else {
-            return (
-              <li
-                key={attendance.id}
-                className="flex  items-center justify-center font-Kanit w-full md:w-full rounded-md gap-1"
-              >
-                <div className="flex justify-center items-center rounded-lg w-[220px] h-[30px] bg-[#E8E8E8] text-[#2C7CD1]">
-                  <span className=" font-normal text-sm">{formattedDate}</span>
-                </div>
-                <div className="flex justify-center items-center rounded-lg w-[100px] h-[30px] bg-gray-500  text-white">
-                  <span>ไม่มีข้อมูล</span>
                 </div>
               </li>
             );

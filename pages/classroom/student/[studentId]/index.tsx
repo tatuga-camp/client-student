@@ -19,10 +19,10 @@ import { IoHome } from "react-icons/io5";
 import Image from "next/image";
 import { Skeleton } from "@mui/material";
 import { BsImageFill } from "react-icons/bs";
-import AttendanceStatus from "../../../../components/studnet/attendanceStatus";
+import AttendanceStatus from "../../../../components/student/attendanceStatus";
 import Link from "next/link";
-import ScoreStatus from "../../../../components/studnet/scoreStatus";
-import AssignmentStatus from "../../../../components/studnet/assignmentStatus";
+import ScoreStatus from "../../../../components/student/scoreStatus";
+import AssignmentStatus from "../../../../components/student/assignmentStatus";
 
 interface Menu {
   title: string;
