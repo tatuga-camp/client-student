@@ -120,7 +120,7 @@ function CreateStudentWork({
           <Skeleton width="100%" height="100%" />
         ) : fetchStudentWork?.data?.status === "no-work" ? (
           <Editor
-            apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+            tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
             textareaName="body"
             init={{
               link_context_toolbar: true,
@@ -168,7 +168,7 @@ function CreateStudentWork({
           />
         ) : (
           <Editor
-            apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+            tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
             textareaName="body"
             init={{
               link_context_toolbar: true,
