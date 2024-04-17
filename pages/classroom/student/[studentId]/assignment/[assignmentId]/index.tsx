@@ -367,7 +367,7 @@ bg-[url('https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud
           >
             <Editor
               disabled={true}
-              apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+              tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
               init={{
                 setup: function (editor) {
                   editor.on("init", function () {

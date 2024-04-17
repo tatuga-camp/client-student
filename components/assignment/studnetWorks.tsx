@@ -256,7 +256,7 @@ justify-center gap-2"
             <div className="w-full h-80 mt-5">
               <Editor
                 disabled={true}
-                apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
                 init={{
                   setup: function (editor) {
                     editor.on("init", function () {});
